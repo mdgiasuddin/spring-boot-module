@@ -3,6 +3,8 @@
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/kafka-consumer/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/kafka-producer/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/rabbitmq-consumer/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/rabbitmq-producer/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/spring-boot-test/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/spring-redis/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />

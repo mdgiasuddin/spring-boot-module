@@ -9,6 +9,8 @@
         <option value="$PROJECT_DIR$/spring-redis/pom.xml" />
         <option value="$PROJECT_DIR$/kafka-producer/pom.xml" />
         <option value="$PROJECT_DIR$/kafka-consumer/pom.xml" />
+        <option value="$PROJECT_DIR$/rabbitmq-producer/pom.xml" />
+        <option value="$PROJECT_DIR$/rabbitmq-consumer/pom.xml" />
       </list>
     </option>
   </component>
