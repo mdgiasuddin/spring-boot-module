@@ -11,7 +11,14 @@
         <option value="$PROJECT_DIR$/kafka-consumer/pom.xml" />
         <option value="$PROJECT_DIR$/rabbitmq-producer/pom.xml" />
         <option value="$PROJECT_DIR$/rabbitmq-consumer/pom.xml" />
+        <option value="$PROJECT_DIR$/oepn-telemetry/pom.xml" />
+        <option value="$PROJECT_DIR$/open-telemetry/pom.xml" />
       </list>
+    </option>
+    <option name="ignoredFiles">
+      <set>
+        <option value="$PROJECT_DIR$/oepn-telemetry/pom.xml" />
+      </set>
     </option>
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_25" default="true" project-jdk-name="corretto-25" project-jdk-type="JavaSDK">

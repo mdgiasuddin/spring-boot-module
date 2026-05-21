@@ -23,6 +23,7 @@
         <module>kafka-consumer</module>
         <module>rabbitmq-producer</module>
         <module>rabbitmq-consumer</module>
+        <module>open-telemetry</module>
     </modules>
 
     <properties>
