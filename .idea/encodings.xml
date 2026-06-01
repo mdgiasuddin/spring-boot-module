@@ -9,7 +9,10 @@
     <file url="file://$PROJECT_DIR$/rabbitmq-producer/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/spring-boot-test/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/spring-redis/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/sqs-consumer/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/sqs-producer/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/resources" charset="UTF-8" />
+    <file url="file://$USER_HOME$/src/main/java" charset="UTF-8" />
   </component>
 </project>

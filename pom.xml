@@ -24,6 +24,8 @@
         <module>rabbitmq-producer</module>
         <module>rabbitmq-consumer</module>
         <module>open-telemetry</module>
+        <module>sqs-producer</module>
+        <module>sqs-consumer</module>
     </modules>
 
     <properties>

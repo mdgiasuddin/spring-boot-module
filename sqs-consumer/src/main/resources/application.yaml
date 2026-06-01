@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: sqs-consumer
+
+aws:
+  endpoint: http://localhost:4766
+  region: us-east-1
+  credentials:
+    access-key: test
+    secret-key: test
+  sqs:
+    queues:
+      my-queue: my-queue
