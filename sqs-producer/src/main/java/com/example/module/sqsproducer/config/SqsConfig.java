@@ -38,20 +38,4 @@ public class SqsConfig {
                 .credentialsProvider(StaticCredentialsProvider.create(AwsBasicCredentials.create(accessKey, secretKey)))
                 .build();
     }
-
-    /*@Bean
-    public SqsTemplate sqsTemplate(SqsAsyncClient sqsAsyncClient) {
-        return SqsTemplate.builder().sqsAsyncClient(sqsAsyncClient).build();
-    }
-
-    @Bean
-    public SqsMessageListenerContainerFactory<Object> defaultSqsListenerContainerFactory(
-            SqsAsyncClient sqsAsyncClient
-    ) {
-        return SqsMessageListenerContainerFactory
-                .builder()
-                .sqsAsyncClient(sqsAsyncClient)
-                .configure(options -> options.acknowledgementMode(ON_SUCCESS))
-                .build();
-    }*/
 }
