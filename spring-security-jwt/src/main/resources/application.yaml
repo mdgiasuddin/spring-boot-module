@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: spring-security-jwt
+
+jwt:
+  signing-key-path: certs/signing_key.pem
+  private-key-path: certs/private_key.pem
+  public-key-path: certs/public_key.pem
