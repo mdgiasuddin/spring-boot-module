@@ -8,7 +8,6 @@ import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Service;
 
-import static com.example.module.kafkaproducer.config.KafkaConfig.TEST_TOPIC;
 import static org.springframework.kafka.support.KafkaHeaders.TOPIC;
 
 @Slf4j
@@ -17,10 +16,10 @@ import static org.springframework.kafka.support.KafkaHeaders.TOPIC;
 public class KafkaProducer {
     private final KafkaTemplate<String, TestEvent> kafkaTemplate;
 
-    public void sendMessage(TestEvent event) {
+    public void sendMessage(TestEvent event, String topic) {
         Message<TestEvent> message = MessageBuilder
                 .withPayload(event)
-                .setHeader(TOPIC, TEST_TOPIC)
+                .setHeader(TOPIC, topic)
                 .build();
 
         kafkaTemplate.send(message);
