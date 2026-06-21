@@ -14,9 +14,13 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class RabbitConfig {
-    public static final String DIRECT_EXCHANGE = "direct.exchange";
-    public static final String DIRECT_QUEUE = "direct.queue";
-    public static final String DIRECT_ROUTING_KEY = "direct.routing.key";
+    public static final String MAIN_EXCHANGE = "main.exchange";
+    public static final String MAIN_QUEUE = "main.queue";
+    public static final String MAIN_ROUTING_KEY = "main.routing.key";
+
+    public static final String DLX_EXCHANGE = "dlx.exchange";
+    public static final String DLQ_QUEUE = "dlx.queue";
+    public static final String DLQ_ROUTING_KEY = "dlx.routingKey";
 
     @Bean
     public MessageConverter messageConverter() {
@@ -31,25 +35,46 @@ public class RabbitConfig {
         return template;
     }
 
-    @Bean
-    public DirectExchange exchange() {
-        return new DirectExchange(DIRECT_EXCHANGE, true, false);
+    @Bean(name = "deadLetterExchange")
+    public DirectExchange deadLetterExchange() {
+        return new DirectExchange(DLX_EXCHANGE, true, false);
     }
 
-    @Bean(name = "directQueue")
-    public Queue directQueue() {
+    @Bean(name = "deadLetterQueue")
+    public Queue deadLetterQueue() {
         return QueueBuilder
-                .durable(DIRECT_QUEUE)
-                .quorum()
+                .durable(DLQ_QUEUE)
                 .build();
     }
 
-    @Bean(name = "directBinding")
-    public Binding directBinding(Queue directQueue, DirectExchange exchange) {
+    @Bean(name = "dlqBinding")
+    public Binding dlqBinding() {
+        return BindingBuilder.bind(deadLetterQueue())
+                .to(deadLetterExchange())
+                .with(DLQ_ROUTING_KEY);
+    }
+
+    @Bean(name = "mainExchange")
+    public DirectExchange mainExchange() {
+        return new DirectExchange(MAIN_EXCHANGE, true, false);
+    }
+
+    @Bean(name = "mainQueue")
+    public Queue mainQueue() {
+        return QueueBuilder
+                .durable(MAIN_QUEUE)
+                .quorum()
+                .withArgument("x-dead-letter-exchange", DLX_EXCHANGE)
+                .withArgument("x-dead-letter-routing-key", DLQ_ROUTING_KEY)
+                .build();
+    }
+
+    @Bean(name = "mainBinding")
+    public Binding mainBinding(Queue mainQueue, DirectExchange mainExchange) {
         return BindingBuilder
-                .bind(directQueue)
-                .to(exchange)
-                .with(DIRECT_ROUTING_KEY);
+                .bind(mainQueue)
+                .to(mainExchange)
+                .with(MAIN_ROUTING_KEY);
     }
 
 }
