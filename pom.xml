@@ -27,6 +27,7 @@
         <module>sqs-producer</module>
         <module>sqs-consumer</module>
         <module>spring-security-jwt</module>
+        <module>mvc-test</module>
     </modules>
 
     <properties>

@@ -3,6 +3,7 @@
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/kafka-consumer/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/kafka-producer/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/mvc-test/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/oepn-telemetry/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/open-telemetry/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/rabbitmq-consumer/src/main/java" charset="UTF-8" />

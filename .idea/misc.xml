@@ -16,6 +16,7 @@
         <option value="$PROJECT_DIR$/sqs-producer/pom.xml" />
         <option value="$PROJECT_DIR$/sqs-consumer/pom.xml" />
         <option value="$PROJECT_DIR$/spring-security-jwt/pom.xml" />
+        <option value="$PROJECT_DIR$/mvc-test/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">
