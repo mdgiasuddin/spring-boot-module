@@ -1,11 +1,13 @@
 package com.example.module.mvctest.controller;
 
+import com.example.module.mvctest.config.SecurityConfig;
 import com.example.module.mvctest.dto.Person;
 import com.example.module.mvctest.service.TestService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.resttestclient.autoconfigure.AutoConfigureRestTestClient;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.assertj.MockMvcTester;
 import org.springframework.test.web.servlet.assertj.MvcTestResult;
@@ -22,6 +24,7 @@ import static org.mockito.BDDMockito.given;
 
 @WebMvcTest(PublicApiController.class)
 @AutoConfigureRestTestClient
+@Import(SecurityConfig.class)
 class PublicApiControllerTest {
 
     @Autowired
