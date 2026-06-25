@@ -1,5 +1,6 @@
 package com.example.module.mvctest.dto;
 
+import com.example.module.mvctest.entity.Person;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,8 +12,14 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Person {
+public class PersonResponse {
     private int id;
     private String name;
     private LocalDate dob;
+
+    public PersonResponse(Person person) {
+        this.id = person.getId();
+        this.name = person.getName();
+        this.dob = person.getDob();
+    }
 }

@@ -1,6 +1,6 @@
 package com.example.module.mvctest.controller;
 
-import com.example.module.mvctest.dto.Person;
+import com.example.module.mvctest.dto.PersonResponse;
 import com.example.module.mvctest.service.TestService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,12 +18,12 @@ public class PrivateApiController {
     private final TestService testService;
 
     @GetMapping("/people")
-    public List<Person> getPersonList() {
+    public List<PersonResponse> getPersonList() {
         return testService.getPersonList();
     }
 
     @GetMapping("/people/{id}")
-    public Person getPersonById(@PathVariable int id) {
+    public PersonResponse getPersonById(@PathVariable int id) {
         return testService.getPersonById(id);
     }
 }

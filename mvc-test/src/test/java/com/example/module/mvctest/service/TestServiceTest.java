@@ -1,6 +1,6 @@
 package com.example.module.mvctest.service;
 
-import com.example.module.mvctest.dto.Person;
+import com.example.module.mvctest.dto.PersonResponse;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -20,18 +20,18 @@ import static org.mockito.BDDMockito.given;
 class TestServiceTest {
 
     @Mock
-    private DataProviderService dataProviderService;
+    private PersonService personService;
 
     @InjectMocks
     private TestService testService;
 
     @Test
     void getPersonList_shouldReturnList() {
-        Person p1 = new Person(1, "John", LocalDate.of(1990, 1, 1));
-        Person p2 = new Person(2, "Jane", LocalDate.of(1995, 10, 20));
-        given(dataProviderService.getPersonList()).willReturn(Arrays.asList(p1, p2));
+        PersonResponse p1 = new PersonResponse(1, "John", LocalDate.of(1990, 1, 1));
+        PersonResponse p2 = new PersonResponse(2, "Jane", LocalDate.of(1995, 10, 20));
+        given(personService.getPersonList()).willReturn(Arrays.asList(p1, p2));
 
-        List<Person> people = testService.getPersonList();
+        List<PersonResponse> people = testService.getPersonList();
         assertNotNull(people);
         assertEquals(2, people.size());
         assertEquals("John", people.getFirst().getName());
@@ -39,11 +39,11 @@ class TestServiceTest {
 
     @Test
     void getPersonById_shouldReturnPersonForValidId() {
-        Person p1 = new Person(1, "John", LocalDate.of(1990, 1, 1));
-        given(dataProviderService.getPersonById(anyInt())).willReturn(p1);
+        PersonResponse p1 = new PersonResponse(1, "John", LocalDate.of(1990, 1, 1));
+        given(personService.getPersonById(anyInt())).willReturn(p1);
 
-        Person person = testService.getPersonById(1);
-        assertNotNull(person);
-        assertEquals("John", person.getName());
+        PersonResponse personResponse = testService.getPersonById(1);
+        assertNotNull(personResponse);
+        assertEquals("John", personResponse.getName());
     }
 }

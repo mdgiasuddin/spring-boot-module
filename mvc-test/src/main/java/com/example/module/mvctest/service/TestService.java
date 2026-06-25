@@ -1,6 +1,6 @@
 package com.example.module.mvctest.service;
 
-import com.example.module.mvctest.dto.Person;
+import com.example.module.mvctest.dto.PersonResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -12,14 +12,14 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TestService {
 
-    private final DataProviderService dataProviderService;
+    private final PersonService personService;
 
-    public List<Person> getPersonList() {
-        return dataProviderService.getPersonList();
+    public List<PersonResponse> getPersonList() {
+        return personService.getPersonList();
     }
 
-    public Person getPersonById(int id) {
-        return dataProviderService.getPersonById(id);
+    public PersonResponse getPersonById(int id) {
+        return personService.getPersonById(id);
     }
 
 }

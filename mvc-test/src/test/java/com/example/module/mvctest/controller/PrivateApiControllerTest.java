@@ -1,7 +1,7 @@
 package com.example.module.mvctest.controller;
 
 import com.example.module.mvctest.config.SecurityConfig;
-import com.example.module.mvctest.dto.Person;
+import com.example.module.mvctest.dto.PersonResponse;
 import com.example.module.mvctest.service.TestService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,8 +35,8 @@ class PrivateApiControllerTest {
 
     @Test
     void getPersonList_shouldReturnList() throws Exception {
-        Person p1 = new Person(1, "John", LocalDate.of(1990, 1, 1));
-        Person p2 = new Person(2, "Jane", LocalDate.of(1995, 10, 20));
+        PersonResponse p1 = new PersonResponse(1, "John", LocalDate.of(1990, 1, 1));
+        PersonResponse p2 = new PersonResponse(2, "Jane", LocalDate.of(1995, 10, 20));
         given(testService.getPersonList()).willReturn(Arrays.asList(p1, p2));
 
         mockMvc.perform(
@@ -47,8 +47,8 @@ class PrivateApiControllerTest {
 
     @Test
     void getPersonList_shouldReturnList_bypassSecurity() throws Exception {
-        Person p1 = new Person(1, "John", LocalDate.of(1990, 1, 1));
-        Person p2 = new Person(2, "Jane", LocalDate.of(1995, 10, 20));
+        PersonResponse p1 = new PersonResponse(1, "John", LocalDate.of(1990, 1, 1));
+        PersonResponse p2 = new PersonResponse(2, "Jane", LocalDate.of(1995, 10, 20));
         given(testService.getPersonList()).willReturn(Arrays.asList(p1, p2));
 
         Authentication authentication = new UsernamePasswordAuthenticationToken(
@@ -68,8 +68,8 @@ class PrivateApiControllerTest {
 
     @Test
     void getPersonList_shouldThrowError() throws Exception {
-        Person p1 = new Person(1, "John", LocalDate.of(1990, 1, 1));
-        Person p2 = new Person(2, "Jane", LocalDate.of(1995, 10, 20));
+        PersonResponse p1 = new PersonResponse(1, "John", LocalDate.of(1990, 1, 1));
+        PersonResponse p2 = new PersonResponse(2, "Jane", LocalDate.of(1995, 10, 20));
         given(testService.getPersonList()).willReturn(Arrays.asList(p1, p2));
 
         mockMvc.perform(get("/api/private/people"))

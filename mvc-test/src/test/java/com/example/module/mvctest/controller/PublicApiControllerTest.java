@@ -1,7 +1,7 @@
 package com.example.module.mvctest.controller;
 
 import com.example.module.mvctest.config.SecurityConfig;
-import com.example.module.mvctest.dto.Person;
+import com.example.module.mvctest.dto.PersonResponse;
 import com.example.module.mvctest.service.TestService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,8 +40,8 @@ class PublicApiControllerTest {
 
     @Test
     void getPersonList_shouldReturnList_mockMvc() throws UnsupportedEncodingException {
-        Person p1 = new Person(1, "John", LocalDate.of(1990, 1, 1));
-        Person p2 = new Person(2, "Jane", LocalDate.of(1995, 10, 20));
+        PersonResponse p1 = new PersonResponse(1, "John", LocalDate.of(1990, 1, 1));
+        PersonResponse p2 = new PersonResponse(2, "Jane", LocalDate.of(1995, 10, 20));
         given(testService.getPersonList()).willReturn(Arrays.asList(p1, p2));
 
         MvcTestResult result = mockMvc.get()
@@ -51,7 +51,7 @@ class PublicApiControllerTest {
         assertThat(result).hasStatusOk();
 
         String jsonResponse = result.getResponse().getContentAsString();
-        Person[] products = objectMapper.readValue(jsonResponse, Person[].class);
+        PersonResponse[] products = objectMapper.readValue(jsonResponse, PersonResponse[].class);
 
         assertThat(products).hasSize(2);
         assertThat(products[0].getName()).isEqualTo("John");
@@ -60,15 +60,15 @@ class PublicApiControllerTest {
 
     @Test
     void getPersonList_shouldReturnList_restClient() {
-        Person p1 = new Person(1, "John", LocalDate.of(1990, 1, 1));
-        Person p2 = new Person(2, "Jane", LocalDate.of(1995, 10, 20));
+        PersonResponse p1 = new PersonResponse(1, "John", LocalDate.of(1990, 1, 1));
+        PersonResponse p2 = new PersonResponse(2, "Jane", LocalDate.of(1995, 10, 20));
         given(testService.getPersonList()).willReturn(Arrays.asList(p1, p2));
 
         client.get()
                 .uri("/api/public/people")
                 .exchange()
                 .expectStatus().isOk()
-                .expectBody(Person[].class)
+                .expectBody(PersonResponse[].class)
                 .value(products -> {
                     assertThat(products).hasSize(2);
                     assertThat(products[0].getName()).isEqualTo("John");
@@ -77,14 +77,14 @@ class PublicApiControllerTest {
 
     @Test
     void getPersonById_shouldReturnPerson_restClient() {
-        Person p1 = new Person(1, "John", LocalDate.of(1990, 1, 1));
+        PersonResponse p1 = new PersonResponse(1, "John", LocalDate.of(1990, 1, 1));
         given(testService.getPersonById(anyInt())).willReturn(p1);
 
         var responseBody = client.get()
                 .uri("/api/public/people/{id}", 1)
                 .exchange()
                 .expectStatus().isOk()
-                .returnResult(Person.class)
+                .returnResult(PersonResponse.class)
                 .getResponseBody();
 
         assertThat(responseBody).isNotNull();
