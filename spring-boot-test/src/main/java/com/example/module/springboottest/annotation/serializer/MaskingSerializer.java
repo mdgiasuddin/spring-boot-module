@@ -65,14 +65,7 @@ public class MaskingSerializer extends ValueSerializer<String> {
         String username = email.substring(0, atIndex);
         String domain = email.substring(atIndex);
 
-        int len = username.length();
-        if (len <= (metadata.keepPrefix() + metadata.keepSuffix())) {
-            return String.valueOf(metadata.maskChar()).repeat(len) + domain;
-        }
-
-        return username.substring(0, metadata.keepPrefix()) +
-                String.valueOf(metadata.maskChar()).repeat(len - metadata.keepPrefix() - metadata.keepSuffix()) +
-                username.substring(len - metadata.keepSuffix()) + domain;
+        return maskStandardText(username, metadata) + domain;
     }
 
     @Override
