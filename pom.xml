@@ -28,6 +28,7 @@
         <module>sqs-consumer</module>
         <module>spring-security-jwt</module>
         <module>mvc-test</module>
+        <module>spring-batch</module>
     </modules>
 
     <properties>

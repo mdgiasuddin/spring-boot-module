@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: spring-batch
+
+  datasource:
+    url: jdbc:postgresql://localhost:5435/spring_test
+    username: postgres
+    password: pass_1234
+    driver-class-name: org.postgresql.Driver
+
+  # Jpa properties
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        jdbc:
+          batch_size: 50
+          ordering: true
