@@ -1,0 +1,26 @@
+services:
+  localstack:
+    image: localstack/localstack:latest
+    container_name: localstack_s3
+    restart: unless-stopped
+    ports:
+      - "4866:4566"            # Host 4866 → Container 4566
+    environment:
+      - SERVICES=s3
+      - DEBUG=1
+      - DATA_DIR=/var/lib/localstack/data
+      - AWS_DEFAULT_REGION=us-east-1
+      - AWS_ACCESS_KEY_ID=test
+      - AWS_SECRET_ACCESS_KEY=test
+    volumes:
+      - localstack-s3-data:/var/lib/localstack
+      - "./spring-batch/src/main/resources/s3:/etc/localstack/init/ready.d"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:4566/_localstack/health" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  localstack-s3-data:

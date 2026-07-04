@@ -1,9 +1,12 @@
-package com.example.module.springbatch.batch;
+package com.example.module.springbatch.batch.s3;
 
 
+import com.example.module.springbatch.batch.EmployeeItemProcessor;
 import com.example.module.springbatch.dto.EmployeeCsvDto;
 import com.example.module.springbatch.entity.Employee;
 import jakarta.persistence.EntityManagerFactory;
+import lombok.RequiredArgsConstructor;
+import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.core.job.Job;
 import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.repository.JobRepository;
@@ -15,18 +18,27 @@ import org.springframework.batch.infrastructure.item.file.FlatFileItemReader;
 import org.springframework.batch.infrastructure.item.file.builder.FlatFileItemReaderBuilder;
 import org.springframework.batch.infrastructure.item.support.SynchronizedItemStreamReader;
 import org.springframework.batch.infrastructure.item.support.builder.SynchronizedItemStreamReaderBuilder;
-import org.springframework.core.io.ClassPathResource;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.transaction.PlatformTransactionManager;
 
-//@Configuration
-public class BatchConfig {
+@Configuration
+@RequiredArgsConstructor
+public class S3BatchConfig {
 
-    //@Bean
-    public SynchronizedItemStreamReader<EmployeeCsvDto> reader() {
+    private final ResourceLoader resourceLoader;
+
+    @Bean
+    @StepScope
+    public SynchronizedItemStreamReader<EmployeeCsvDto> s3Reader(
+            @Value("#{stepExecution.jobExecution.jobParameters.getString('s3FileUrl')}") String s3FileUrl
+    ) {
         FlatFileItemReader<EmployeeCsvDto> reader = new FlatFileItemReaderBuilder<EmployeeCsvDto>()
-                .name("employeeFileReader")
-                .resource(new ClassPathResource("csv/employees.csv"))
+                .name("s3Reader")
+                .resource(resourceLoader.getResource(s3FileUrl))
                 .linesToSkip(1)
                 .delimited()
                 .names("name", "department", "email", "salary", "dob")
@@ -37,15 +49,15 @@ public class BatchConfig {
                 .build();
     }
 
-    //@Bean
-    public JpaItemWriter<Employee> writer(EntityManagerFactory entityManagerFactory) {
+    @Bean
+    public JpaItemWriter<Employee> s3ToJpaWriter(EntityManagerFactory entityManagerFactory) {
         return new JpaItemWriterBuilder<Employee>()
                 .entityManagerFactory(entityManagerFactory)
                 .build();
     }
 
-    //@Bean
-    public Step employeeStep(
+    @Bean
+    public Step s3EmployeeStep(
             JobRepository jobRepository,
             PlatformTransactionManager transactionManager,
             SynchronizedItemStreamReader<EmployeeCsvDto> reader,
@@ -53,7 +65,7 @@ public class BatchConfig {
             JpaItemWriter<Employee> writer,
             ThreadPoolTaskExecutor taskExecutor
     ) {
-        return new StepBuilder("insertEmployeeStep", jobRepository)
+        return new StepBuilder("s3EmployeeStep", jobRepository)
                 .<EmployeeCsvDto, Employee>chunk(50)
                 .transactionManager(transactionManager)
                 .reader(reader)
@@ -63,8 +75,8 @@ public class BatchConfig {
                 .build();
     }
 
-    //@Bean
-    public ThreadPoolTaskExecutor taskExecutor() {
+    @Bean
+    public ThreadPoolTaskExecutor s3TaskExecutor() {
         ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
         taskExecutor.setCorePoolSize(5);
         taskExecutor.setMaxPoolSize(10);
@@ -73,9 +85,9 @@ public class BatchConfig {
         return taskExecutor;
     }
 
-    //@Bean
-    public Job insertEmployeeJob(JobRepository jobRepository, Step subscriptionStep) {
-        return new JobBuilder("insertEmployeeJob", jobRepository)
+    @Bean
+    public Job s3InsertEmployeeJob(JobRepository jobRepository, Step subscriptionStep) {
+        return new JobBuilder("s3InsertEmployeeJob", jobRepository)
                 .start(subscriptionStep)
                 .build();
     }

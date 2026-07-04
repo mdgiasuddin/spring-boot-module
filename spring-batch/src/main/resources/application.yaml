@@ -20,3 +20,27 @@ spring:
         jdbc:
           batch_size: 50
           ordering: true
+
+  cloud:
+    aws:
+      s3:
+        endpoint: http://localhost:4866
+        bucket-name: employee-csv
+        path-style-access-enabled: true
+        region: us-east-1
+      region:
+        static: us-east-1
+      credentials:
+        access-key: test
+        secret-key: test
+
+
+  servlet:
+    multipart:
+      max-file-size: 500MB
+      max-request-size: 500MB
+      file-size-threshold: 10MB # Avoid buffering file uploads entirely in memory [1]
+
+  batch:
+    job:
+      enabled: false
