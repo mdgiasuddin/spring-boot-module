@@ -15,6 +15,7 @@ import static com.example.module.recurringsubscription.common.enumeration.Paymen
 @Service
 @RequiredArgsConstructor
 public class PaymentHandler {
+    private final BankService bankService;
     private final PaymentRepository paymentRepository;
 
     public void handlePayment(Long paymentId) {
@@ -33,5 +34,7 @@ public class PaymentHandler {
 
         payment.setStatus(PROCESSING);
         paymentRepository.save(payment);
+
+        bankService.processPayment(payment);
     }
 }
