@@ -2,7 +2,6 @@ package com.example.module.recurringsubscription.messaging.producer;
 
 import com.example.module.recurringsubscription.dto.event.PaymentEvent;
 import com.example.module.recurringsubscription.entity.Payment;
-import com.example.module.recurringsubscription.repository.PaymentBatchRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -20,25 +19,18 @@ import static org.springframework.kafka.support.KafkaHeaders.TOPIC;
 @RequiredArgsConstructor
 public class KafkaProducer {
 
-    private final PaymentBatchRepository paymentBatchRepository;
     private final KafkaTemplate<String, PaymentEvent> kafkaTemplate;
 
     public void sendPaymentEvent(List<Payment> payments) {
         payments.forEach(payment -> {
-            try {
-                Message<PaymentEvent> message = MessageBuilder
-                        .withPayload(new PaymentEvent(payment.getId()))
-                        .setHeader(TOPIC, SUBSCRIPTION_PAYMENTS)
-                        .build();
+            Message<PaymentEvent> message = MessageBuilder
+                    .withPayload(new PaymentEvent(payment.getId()))
+                    .setHeader(TOPIC, SUBSCRIPTION_PAYMENTS)
+                    .build();
 
-                kafkaTemplate.send(message);
-                log.info("Message sent -> {}", payment.getId());
-                payment.setPublished(true);
-            } catch (Exception e) {
-                log.error("Failed to send message for payment ID: {}", payment.getId(), e);
-            }
+            kafkaTemplate.send(message);
+            log.info("Message sent -> {}", payment.getId());
         });
 
-        paymentBatchRepository.batchUpdate(payments);
     }
 }

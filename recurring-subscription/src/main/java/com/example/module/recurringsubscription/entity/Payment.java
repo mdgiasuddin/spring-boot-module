@@ -33,5 +33,4 @@ public class Payment {
     private BigDecimal amount;
     @Enumerated(STRING)
     private PaymentStatus status;
-    private boolean published = false;
 }

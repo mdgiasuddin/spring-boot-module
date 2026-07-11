@@ -26,10 +26,9 @@ public class PaymentBatchRepository {
                     subscription_id,
                     execution_date,
                     amount,
-                    status,
-                    published
+                    status
                 )
-                values (?, ?, ?, ?, ?)
+                values (?, ?, ?, ?)
                 """;
 
         GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
@@ -44,7 +43,6 @@ public class PaymentBatchRepository {
                         ps.setDate(2, Date.valueOf(payment.getExecutionDate()));
                         ps.setBigDecimal(3, payment.getAmount());
                         ps.setString(4, payment.getStatus().name());
-                        ps.setBoolean(5, payment.isPublished());
                     }
 
                     @Override
@@ -64,20 +62,4 @@ public class PaymentBatchRepository {
         }
     }
 
-    public void batchUpdate(List<Payment> payments) {
-        String sql = """
-                update payment
-                set published = ?
-                where id = ?
-                """;
-
-        jdbcTemplate.batchUpdate(
-                sql,
-                payments,
-                1000,
-                (ps, payment) -> {
-                    ps.setBoolean(1, payment.isPublished());
-                    ps.setLong(2, payment.getId());
-                });
-    }
 }
