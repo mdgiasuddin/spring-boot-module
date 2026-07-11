@@ -15,7 +15,7 @@ public class KafkaProducer {
     private final PaymentBatchRepository paymentBatchRepository;
     private final KafkaTemplate<String, Long> kafkaTemplate;
 
-    public void sentPaymentEvent(List<Payment> payments) {
+    public void sendPaymentEvent(List<Payment> payments) {
         payments.forEach(payment -> {
 //            kafkaTemplate.send(SUBSCRIPTION_PAYMENTS, payment.getId());
             payment.setPublished(true);

@@ -7,6 +7,7 @@ import com.example.module.recurringsubscription.repository.PaymentBatchRepositor
 import com.example.module.recurringsubscription.repository.SubscriptionBatchRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +22,7 @@ public class SubscriptionService {
     private final PaymentBatchRepository paymentBatchRepository;
     private final KafkaProducer kafkaProducer;
 
-    //    @Transactional
+    @Transactional
     public void paySubscriptions(List<Subscription> subscriptions) {
         List<Payment> payments = new ArrayList<>();
         for (Subscription subscription : subscriptions) {
@@ -39,6 +40,6 @@ public class SubscriptionService {
         subscriptionBatchRepository.batchUpdate(subscriptions);
         paymentBatchRepository.batchInsert(payments);
 
-        kafkaProducer.sentPaymentEvent(payments);
+        kafkaProducer.sendPaymentEvent(payments);
     }
 }
