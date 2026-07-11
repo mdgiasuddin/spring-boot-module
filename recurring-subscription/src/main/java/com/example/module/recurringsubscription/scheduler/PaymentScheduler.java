@@ -20,7 +20,7 @@ public class PaymentScheduler {
     private final SubscriptionService subscriptionService;
     private final Chunker chunker;
 
-    @Scheduled(cron = "0 43 14 * * *")
+    @Scheduled(cron = "0 06 15 * * *")
     public void pay() {
         List<Subscription> subscriptions = subscriptionBatchRepository.fetchSubscriptions(LocalDate.now(), 3000);
         List<List<Subscription>> chunks = chunker.getChunks(subscriptions, 1000);
