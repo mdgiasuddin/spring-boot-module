@@ -1,7 +1,7 @@
-package com.example.module.recurringsubscription.mapper;
+package com.example.module.recurringsubscription.common.mapper;
 
-import com.example.module.recurringsubscription.entity.Subscription;
-import com.example.module.recurringsubscription.enumeration.Frequency;
+import com.example.module.recurringsubscription.common.entity.Subscription;
+import com.example.module.recurringsubscription.common.enumeration.Frequency;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.Date;

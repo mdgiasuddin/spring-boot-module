@@ -1,7 +1,8 @@
-package com.example.module.recurringsubscription.scheduler;
+package com.example.module.recurringsubscription.reader.scheduler;
 
-import com.example.module.recurringsubscription.entity.Subscription;
-import com.example.module.recurringsubscription.repository.SubscriptionBatchRepository;
+import com.example.module.recurringsubscription.common.entity.Subscription;
+import com.example.module.recurringsubscription.common.repository.jdbc.SubscriptionBatchRepository;
+import com.example.module.recurringsubscription.reader.service.SubscriptionService;
 import com.example.module.recurringsubscription.util.Chunker;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -20,9 +21,9 @@ public class PaymentScheduler {
     private final SubscriptionService subscriptionService;
     private final Chunker chunker;
 
-    @Scheduled(cron = "0 32 15 * * *")
+    @Scheduled(cron = "0 41 18 * * *")
     public void pay() {
-        List<Subscription> subscriptions = subscriptionBatchRepository.fetchSubscriptions(LocalDate.now(), 3000);
+        List<Subscription> subscriptions = subscriptionBatchRepository.fetchSubscriptions(LocalDate.now(), 10000);
         List<List<Subscription>> chunks = chunker.getChunks(subscriptions, 1000);
 
         try (ExecutorService pool = Executors.newFixedThreadPool(10)) {

@@ -1,6 +1,6 @@
-package com.example.module.recurringsubscription.repository;
+package com.example.module.recurringsubscription.common.repository.jdbc;
 
-import com.example.module.recurringsubscription.entity.Payment;
+import com.example.module.recurringsubscription.common.entity.Payment;
 import lombok.RequiredArgsConstructor;
 import org.jspecify.annotations.NonNull;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;

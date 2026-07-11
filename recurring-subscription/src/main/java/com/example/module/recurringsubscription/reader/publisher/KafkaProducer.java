@@ -1,7 +1,7 @@
-package com.example.module.recurringsubscription.messaging.producer;
+package com.example.module.recurringsubscription.reader.publisher;
 
-import com.example.module.recurringsubscription.dto.event.PaymentEvent;
-import com.example.module.recurringsubscription.entity.Payment;
+import com.example.module.recurringsubscription.common.dto.event.PaymentEvent;
+import com.example.module.recurringsubscription.common.entity.Payment;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-import static com.example.module.recurringsubscription.messaging.config.KafkaConfig.SUBSCRIPTION_PAYMENTS;
+import static com.example.module.recurringsubscription.common.config.KafkaConfig.SUBSCRIPTION_PAYMENTS;
 import static org.springframework.kafka.support.KafkaHeaders.TOPIC;
 
 @Slf4j

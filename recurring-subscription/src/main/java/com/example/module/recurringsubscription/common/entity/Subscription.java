@@ -1,6 +1,6 @@
-package com.example.module.recurringsubscription.entity;
+package com.example.module.recurringsubscription.common.entity;
 
-import com.example.module.recurringsubscription.enumeration.Frequency;
+import com.example.module.recurringsubscription.common.enumeration.Frequency;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;

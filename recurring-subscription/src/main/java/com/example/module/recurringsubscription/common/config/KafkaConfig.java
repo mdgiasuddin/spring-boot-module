@@ -1,4 +1,4 @@
-package com.example.module.recurringsubscription.messaging.config;
+package com.example.module.recurringsubscription.common.config;
 
 import org.apache.kafka.clients.admin.NewTopic;
 import org.springframework.context.annotation.Bean;

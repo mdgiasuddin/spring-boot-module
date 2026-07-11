@@ -1,7 +1,7 @@
-package com.example.module.recurringsubscription.repository;
+package com.example.module.recurringsubscription.common.repository.jdbc;
 
-import com.example.module.recurringsubscription.entity.Subscription;
-import com.example.module.recurringsubscription.mapper.SubscriptionRowMapper;
+import com.example.module.recurringsubscription.common.entity.Subscription;
+import com.example.module.recurringsubscription.common.mapper.SubscriptionRowMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;

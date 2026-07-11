@@ -1,10 +1,10 @@
-package com.example.module.recurringsubscription.scheduler;
+package com.example.module.recurringsubscription.reader.service;
 
-import com.example.module.recurringsubscription.entity.Payment;
-import com.example.module.recurringsubscription.entity.Subscription;
-import com.example.module.recurringsubscription.messaging.producer.KafkaProducer;
-import com.example.module.recurringsubscription.repository.PaymentBatchRepository;
-import com.example.module.recurringsubscription.repository.SubscriptionBatchRepository;
+import com.example.module.recurringsubscription.common.entity.Payment;
+import com.example.module.recurringsubscription.common.entity.Subscription;
+import com.example.module.recurringsubscription.common.repository.jdbc.PaymentBatchRepository;
+import com.example.module.recurringsubscription.common.repository.jdbc.SubscriptionBatchRepository;
+import com.example.module.recurringsubscription.reader.publisher.KafkaProducer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.example.module.recurringsubscription.enumeration.PaymentStatus.QUEUED;
+import static com.example.module.recurringsubscription.common.enumeration.PaymentStatus.QUEUED;
 
 @Service
 @RequiredArgsConstructor
