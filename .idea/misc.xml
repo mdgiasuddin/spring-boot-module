@@ -18,11 +18,13 @@
         <option value="$PROJECT_DIR$/spring-security-jwt/pom.xml" />
         <option value="$PROJECT_DIR$/mvc-test/pom.xml" />
         <option value="$PROJECT_DIR$/spring-batch/pom.xml" />
+        <option value="$PROJECT_DIR$/recurring-subscription/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">
       <set>
         <option value="$PROJECT_DIR$/oepn-telemetry/pom.xml" />
+        <option value="$PROJECT_DIR$/recurring-payment-processor/pom.xml" />
       </set>
     </option>
   </component>

@@ -29,6 +29,7 @@
         <module>spring-security-jwt</module>
         <module>mvc-test</module>
         <module>spring-batch</module>
+        <module>recurring-subscription</module>
     </modules>
 
     <properties>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourcePerFileMappings">
+    <file url="file://$PROJECT_DIR$/insert_subscriptions.sql" value="af31ed90-6dbd-45bc-9f18-dbd183d12146" />
+    <file url="file://$PROJECT_DIR$/recurring-subscription/src/main/java/com/example/module/recurringsubscription/repository/PaymentBatchRepository.java" value="af31ed90-6dbd-45bc-9f18-dbd183d12146" />
+    <file url="file://$PROJECT_DIR$/recurring-subscription/src/main/java/com/example/module/recurringsubscription/repository/SubscriptionBatchRepository.java" value="af31ed90-6dbd-45bc-9f18-dbd183d12146" />
+  </component>
+</project>
