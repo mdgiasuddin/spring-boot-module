@@ -6,3 +6,6 @@ jwt:
   signing-key-path: certs/signing_key.pem
   private-key-path: certs/private_key.pem
   public-key-path: certs/public_key.pem
+
+api-security:
+  key: f03aa665512f495488bf66bc1f00e02e

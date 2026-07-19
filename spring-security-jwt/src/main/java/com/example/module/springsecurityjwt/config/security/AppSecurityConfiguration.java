@@ -66,6 +66,7 @@ public class AppSecurityConfiguration {
                                         "/swagger-ui.html",
                                         "/api/auth/login",
                                         "/api/auth/register",
+                                        "/api/test/api-key/**",
                                         "/api/test/jwt/**"
                                 )
                                 .permitAll()
