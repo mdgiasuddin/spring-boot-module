@@ -6,6 +6,7 @@ import com.example.module.springboottest.dto.SecuredRequest;
 import com.example.module.springboottest.util.SignatureUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 import tools.jackson.databind.ObjectMapper;
@@ -19,8 +20,10 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ApiKeyTestService {
     private final RestClient restClient;
-    private final SignatureUtil signatureUtil;
     private final ObjectMapper objectMapper;
+
+    @Value("${api-security.key}")
+    private String securityKey;
 
     public ApiResponse test() {
         SampleRequest request = new SampleRequest(101, "Giash Uddin", LocalDate.of(1995, 10, 2));
@@ -29,7 +32,7 @@ public class ApiKeyTestService {
         long epochMilli = Instant.now().toEpochMilli();
 
         String modifiedPayload = String.format("%s|%d|%s", requestId, epochMilli, json);
-        String signature = signatureUtil.sign(modifiedPayload);
+        String signature = SignatureUtil.sign(securityKey, modifiedPayload);
 
         return restClient.post()
                 .uri("/api/test/api-key")

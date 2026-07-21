@@ -1,19 +1,16 @@
 package com.example.module.springboottest.util;
 
-import org.springframework.stereotype.Component;
-
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
 public class NumberWordConverter {
 
-    private final String[] units = {"", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten",
+    private static final String[] units = {"", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten",
             "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen"};
 
-    private final String[] tens = {"", "", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"};
+    private static final String[] tens = {"", "", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"};
 
-    public String convertToWords(long number) {
+    public static String convertToWords(long number) {
         if (number == 0) {
             return "Zero";
         }
@@ -31,7 +28,7 @@ public class NumberWordConverter {
         return String.join(" ", words);
     }
 
-    private void convertToWords(int number, List<String> words) {
+    private static void convertToWords(int number, List<String> words) {
         int lakh = Math.toIntExact((number % 10000000) / 100000);
         int thousand = Math.toIntExact((number % 100000) / 1000);
         int hundred = Math.toIntExact((number % 1000) / 100);
@@ -43,7 +40,7 @@ public class NumberWordConverter {
         convertToWords(tenOne, "", words);
     }
 
-    private void convertToWords(int number, String unit, List<String> words) {
+    private static void convertToWords(int number, String unit, List<String> words) {
         if (number == 0) {
             return;
         }
@@ -52,7 +49,7 @@ public class NumberWordConverter {
         if (!unit.isEmpty()) words.add(unit);
     }
 
-    private void convert(int number, List<String> words) {
+    private static void convert(int number, List<String> words) {
         if (number < 20) {
             words.add(units[number]);
             return;

@@ -18,8 +18,6 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class TestController {
 
-    private final NumberWordConverter numberWordConverter;
-
     @GetMapping
     public String test() {
         log.info("test");
@@ -39,7 +37,7 @@ public class TestController {
 
     @GetMapping("/number-to-words")
     public String getNumber(@RequestParam long number) {
-        return numberWordConverter.convertToWords(number);
+        return NumberWordConverter.convertToWords(number);
     }
 
     @PostConstruct

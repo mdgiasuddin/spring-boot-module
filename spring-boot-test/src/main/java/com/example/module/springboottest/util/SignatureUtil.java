@@ -1,7 +1,6 @@
 package com.example.module.springboottest.util;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import lombok.NoArgsConstructor;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -9,18 +8,16 @@ import java.security.MessageDigest;
 import java.util.Base64;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static lombok.AccessLevel.PRIVATE;
 
-@Component
+@NoArgsConstructor(access = PRIVATE)
 public class SignatureUtil {
 
-    private final Base64.Encoder base64UrlEncoder = Base64.getUrlEncoder();
-    private final Base64.Decoder base64UrlDecoder = Base64.getUrlDecoder();
+    private static final Base64.Encoder base64UrlEncoder = Base64.getUrlEncoder();
+    private static final Base64.Decoder base64UrlDecoder = Base64.getUrlDecoder();
     private static final String algorithm = "HmacSHA256";
 
-    @Value("${api-security.key}")
-    private String securityKey;
-
-    public String sign(String payload) {
+    public static String sign(String securityKey, String payload) {
         byte[] decodedKey = base64UrlDecoder.decode(securityKey);
         SecretKeySpec keySpec = new SecretKeySpec(decodedKey, algorithm);
 
@@ -35,8 +32,8 @@ public class SignatureUtil {
         }
     }
 
-    public boolean verify(String signature, String payload) {
-        String computedSignature = sign(payload);
+    public static boolean verify(String securityKey, String signature, String payload) {
+        String computedSignature = sign(securityKey, payload);
         return MessageDigest.isEqual(
                 computedSignature.getBytes(UTF_8),
                 signature.getBytes(UTF_8)
