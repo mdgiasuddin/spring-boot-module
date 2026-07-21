@@ -1,14 +1,16 @@
 package com.example.module.recurringsubscription.util;
 
-import org.springframework.stereotype.Component;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
-public class Chunker {
+import static lombok.AccessLevel.PRIVATE;
 
-    public <T> List<List<T>> getChunks(List<T> list, int chunkSize) {
+@NoArgsConstructor(access = PRIVATE)
+public class ListUtil {
+
+    public static <T> List<List<T>> divideIntoChunks(List<T> list, int chunkSize) {
         List<List<T>> chunks = new ArrayList<>();
 
         for (int i = 0; i < list.size(); i += chunkSize) {
