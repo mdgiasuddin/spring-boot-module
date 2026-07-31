@@ -30,6 +30,7 @@
         <module>mvc-test</module>
         <module>spring-batch</module>
         <module>recurring-subscription</module>
+        <module>spring-neo4j</module>
     </modules>
 
     <properties>

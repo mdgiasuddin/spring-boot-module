@@ -19,6 +19,7 @@
         <option value="$PROJECT_DIR$/mvc-test/pom.xml" />
         <option value="$PROJECT_DIR$/spring-batch/pom.xml" />
         <option value="$PROJECT_DIR$/recurring-subscription/pom.xml" />
+        <option value="$PROJECT_DIR$/spring-neo4j/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">
