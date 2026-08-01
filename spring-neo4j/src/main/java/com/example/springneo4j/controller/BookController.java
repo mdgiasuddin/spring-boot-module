@@ -1,7 +1,7 @@
 package com.example.springneo4j.controller;
 
 import com.example.springneo4j.dto.request.BookRequest;
-import com.example.springneo4j.entity.Book;
+import com.example.springneo4j.entity.BookNode;
 import com.example.springneo4j.service.BookService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -22,17 +22,17 @@ public class BookController {
     private final BookService bookService;
 
     @PostMapping
-    public Book createBook(@Valid @RequestBody BookRequest request) {
+    public BookNode createBook(@Valid @RequestBody BookRequest request) {
         return bookService.createBook(request);
     }
 
     @GetMapping
-    public List<Book> getAllBooks() {
+    public List<BookNode> getAllBooks() {
         return bookService.getAllBooks();
     }
 
     @GetMapping("/{id}")
-    public Book getBookById(@PathVariable Long id) {
+    public BookNode getBookById(@PathVariable Long id) {
         return bookService.getBookById(id);
     }
 

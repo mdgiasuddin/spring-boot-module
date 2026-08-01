@@ -1,7 +1,7 @@
 package com.example.springneo4j.service;
 
 import com.example.springneo4j.dto.request.BookRequest;
-import com.example.springneo4j.entity.Book;
+import com.example.springneo4j.entity.BookNode;
 import com.example.springneo4j.repository.BookRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,18 +14,18 @@ public class BookService {
 
     private final BookRepository bookRepository;
 
-    public Book createBook(BookRequest request) {
-        Book book = new Book();
+    public BookNode createBook(BookRequest request) {
+        BookNode book = new BookNode();
         book.setName(request.name());
         book.setAuthor(request.author());
         return bookRepository.save(book);
     }
 
-    public List<Book> getAllBooks() {
+    public List<BookNode> getAllBooks() {
         return bookRepository.findAll();
     }
 
-    public Book getBookById(Long id) {
+    public BookNode getBookById(Long id) {
         return bookRepository.findById(id).orElse(null);
     }
 }

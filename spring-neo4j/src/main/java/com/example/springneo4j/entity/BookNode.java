@@ -6,10 +6,10 @@ import org.springframework.data.neo4j.core.schema.GeneratedValue;
 import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
 
-@Node
+@Node("Book")
 @Getter
 @Setter
-public class Book {
+public class BookNode {
     @Id
     @GeneratedValue
     private Long id;
