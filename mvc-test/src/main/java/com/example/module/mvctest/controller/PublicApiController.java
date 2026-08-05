@@ -1,8 +1,10 @@
 package com.example.module.mvctest.controller;
 
 import com.example.module.mvctest.dto.PersonResponse;
+import com.example.module.mvctest.entity.Person;
 import com.example.module.mvctest.service.TestService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,5 +27,10 @@ public class PublicApiController {
     @GetMapping("/people/{id}")
     public PersonResponse getPersonById(@PathVariable int id) {
         return testService.getPersonById(id);
+    }
+
+    @GetMapping("/people/all/{page}")
+    public Page<Person> getAllPerson(@PathVariable int page) {
+        return testService.getAllPerson(page);
     }
 }
