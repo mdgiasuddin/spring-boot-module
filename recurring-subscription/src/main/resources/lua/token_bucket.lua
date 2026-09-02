@@ -17,8 +17,17 @@ else
     if elapsed > 0 then
         local refill = math.floor(elapsed * refillRate / 1000)
         if refill > 0 then
+            local oldTokens = tokens
             tokens = math.min(maxTokens, tokens + refill)
-            lastRefill = currentTime
+            local tokensAdded = tokens - oldTokens
+
+            -- Advance lastRefill only by the exact time consumed by the tokens added,
+            -- preserving the fractional remainder for the next check.
+            if tokens == maxTokens then
+                lastRefill = currentTime
+            else
+                lastRefill = lastRefill + math.floor(tokensAdded * 1000 / refillRate)
+            end
         end
     end
 end
@@ -31,7 +40,6 @@ end
 
 redis.call('HSET', key, 'tokens', tokens, 'lastRefill', lastRefill)
 
--- Calculate dynamic TTL: time to fully refill + safety buffer (e.g., 60 seconds)
 local secondsToFull = math.ceil((maxTokens - tokens) / (refillRate / 1000))
 local ttl = math.max(60, math.ceil(secondsToFull / 1000) + 60)
 redis.call('EXPIRE', key, ttl)
