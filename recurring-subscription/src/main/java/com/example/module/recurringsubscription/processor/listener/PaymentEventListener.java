@@ -19,7 +19,7 @@ public class PaymentEventListener {
     private final PaymentHandler paymentHandler;
     private final ObjectMapper objectMapper;
 
-    @KafkaListener(topics = SUBSCRIPTION_PAYMENTS, groupId = "subscription-payment-processor")
+    @KafkaListener(topics = SUBSCRIPTION_PAYMENTS, groupId = "subscription-payment-processor", concurrency = "3")
     public void listen(ConsumerRecord<String, byte[]> messageBytes) {
         PaymentEvent event = objectMapper.readValue(messageBytes.value(), PaymentEvent.class);
         log.info("Received message from topic: {}", event);

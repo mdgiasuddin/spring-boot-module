@@ -7,6 +7,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Version;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -33,4 +34,6 @@ public class Payment {
     private BigDecimal amount;
     @Enumerated(STRING)
     private PaymentStatus status;
+    @Version
+    private int version;
 }

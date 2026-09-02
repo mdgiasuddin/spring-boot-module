@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,8 +24,14 @@ public class SubscriptionService {
     private final KafkaProducer kafkaProducer;
 
     @Transactional
-    public void paySubscriptions(List<Subscription> subscriptions) {
-        List<Payment> payments = new ArrayList<>();
+    public int payNextBatch(LocalDate dueDate, int batchSize) {
+        List<Subscription> subscriptions = subscriptionBatchRepository.fetchSubscriptions(dueDate, batchSize);
+
+        if (subscriptions.isEmpty()) {
+            return 0;
+        }
+
+        List<Payment> payments = new ArrayList<>(subscriptions.size());
         for (Subscription subscription : subscriptions) {
 
             Payment payment = new Payment();
@@ -41,5 +48,7 @@ public class SubscriptionService {
         paymentBatchRepository.batchInsert(payments);
 
         kafkaProducer.sendPaymentEvent(payments);
+
+        return subscriptions.size();
     }
 }
