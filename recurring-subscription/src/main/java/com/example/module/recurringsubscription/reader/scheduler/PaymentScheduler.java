@@ -3,6 +3,7 @@ package com.example.module.recurringsubscription.reader.scheduler;
 import com.example.module.recurringsubscription.reader.service.SubscriptionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.javacrumbs.shedlock.spring.annotation.SchedulerLock;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -22,11 +23,16 @@ public class PaymentScheduler {
 
     private static final int WORKERS = 4;
     private static final int BATCH_SIZE = 500;
-    private static final int MAX_PER_WORKER = 5000;
+    private static final int MAX_PER_WORKER = 1000;
 
     private final SubscriptionService subscriptionService;
 
-    @Scheduled(cron = "0 56 22 * * *")
+    @Scheduled(cron = "0 12 10 * * *", zone = "Asia/Dhaka")
+    @SchedulerLock(
+            name = "process-daily-payments-task",
+            lockAtLeastFor = "PT10M",
+            lockAtMostFor = "PT20M"
+    )
     public void pay() {
         LocalDate dueDate = LocalDate.now();
 
