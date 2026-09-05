@@ -27,7 +27,7 @@ public class PaymentScheduler {
 
     private final SubscriptionService subscriptionService;
 
-    @Scheduled(cron = "0 12 10 * * *", zone = "Asia/Dhaka")
+    @Scheduled(cron = "0 35 14 * * *", zone = "Asia/Dhaka")
     @SchedulerLock(
             name = "process-daily-payments-task",
             lockAtLeastFor = "PT10M",
