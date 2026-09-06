@@ -58,9 +58,9 @@ server.port=8080
 spring.application.name=redis-mtls-demo
 
 # --- SSL Bundle: reads the PEM cert/key files directly, no keystore conversion needed ---
-spring.ssl.bundle.pem.redis-mtls.keystore.certificate=file:${REDIS_TLS_CLIENT_CERT:certs/client.crt}
-spring.ssl.bundle.pem.redis-mtls.keystore.private-key=file:${REDIS_TLS_CLIENT_KEY:certs/client_pkcs8.key}
-spring.ssl.bundle.pem.redis-mtls.truststore.certificate=file:${REDIS_TLS_CA_CERT:certs/ca.crt}
+spring.ssl.bundle.pem.redis-mtls.keystore.certificate=file:${REDIS_TLS_CLIENT_CERT:/home/giash.inument_bKash.com/redis-cert/client.crt}
+spring.ssl.bundle.pem.redis-mtls.keystore.private-key=file:${REDIS_TLS_CLIENT_KEY:/home/giash.inument_bKash.com/redis-cert/client_pkcs8.key}
+spring.ssl.bundle.pem.redis-mtls.truststore.certificate=file:${REDIS_TLS_CA_CERT:/home/giash.inument_bKash.com/redis-cert/ca.crt}
 
 # --- Redis connection: auto-configured by Spring Boot, using the bundle above for mTLS ---
 spring.data.redis.host=${REDIS_HOST:localhost}
