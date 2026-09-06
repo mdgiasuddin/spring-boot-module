@@ -130,6 +130,7 @@ openssl pkcs8 -topk8 -inform PEM -in certs/client/client.key \
 * Run command: `sudo docker compose up -d`
 * Run `convert-client-key`
 * Copy `ca.crt`, `client.crt`, `client.pk8` to `pg-certs` directory.
+* Give permission to `client.pk8`. Run command: `chmod 600 ~/pg-certs/client.pk8`
 * Update the application.properties file with:
 
 ```angular2html
