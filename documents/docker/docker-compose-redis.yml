@@ -1,0 +1,15 @@
+services:
+  redis:
+    image: redis/redis-stack-server:latest
+    container_name: redis-stack-tls
+    environment:
+      - REDIS_ARGS=--tls-port 6379 --port 0 --tls-cert-file /tls/redis.crt --tls-key-file /tls/redis.key --tls-ca-cert-file /tls/ca.crt --tls-auth-clients yes
+    volumes:
+      - ./certs:/tls:ro
+      - redis-data:/data
+    ports:
+      - "6383:6379"
+    restart: unless-stopped
+
+volumes:
+  redis-data:

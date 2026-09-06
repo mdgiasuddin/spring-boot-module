@@ -58,43 +58,7 @@ cd ..
 echo "Certs generated in ./certs"
 ```
 
-##### Docker Compose File => `docker-compose.yml`
-
-```angular2html
-services:
-kafka:
-image: confluentinc/cp-kafka:8.3.1
-container_name: kafka
-ports:
-- "9093:9093"
-environment:
-CLUSTER_ID: MkU3OEVBNTcwNTJENDM2Qk   # <-- required by the entrypoint script (KRaft bootstrap)
-
-KAFKA_NODE_ID: 1
-KAFKA_PROCESS_ROLES: broker,controller
-KAFKA_LISTENERS: SSL://0.0.0.0:9093,CONTROLLER://0.0.0.0:9094
-KAFKA_ADVERTISED_LISTENERS: SSL://localhost:9093
-KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
-KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: SSL:SSL,CONTROLLER:PLAINTEXT
-KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka:9094
-KAFKA_INTER_BROKER_LISTENER_NAME: SSL
-
-KAFKA_SSL_KEYSTORE_FILENAME: kafka.broker.keystore.jks
-KAFKA_SSL_KEYSTORE_CREDENTIALS: cert-creds
-KAFKA_SSL_KEY_CREDENTIALS: cert-creds
-KAFKA_SSL_TRUSTSTORE_FILENAME: kafka.broker.truststore.jks
-KAFKA_SSL_TRUSTSTORE_CREDENTIALS: cert-creds
-KAFKA_SSL_CLIENT_AUTH: required
-
-KAFKA_LOG_DIRS: /var/lib/kafka/data
-KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-volumes:
-- ./certs:/etc/kafka/secrets
-- kafka-data:/var/lib/kafka/data
-
-volumes:
-kafka-data:
-```
+##### Docker Compose File => `docker/docker-compose-kafka.yml`
 
 ##### Steps to Follow
 

@@ -1,6 +1,6 @@
 ### TLS Configuration
 
-##### create-ca.sh
+##### Create CA: `create-ca.sh`
 
 ```angular2html
 mkdir -p ./certs/ca
@@ -17,7 +17,7 @@ openssl req -new -x509 -days 3650 -key ca.key -out ca.crt \
 cd ../..
 ```
 
-##### re-issue-server-certificate.sh
+##### Re Issue Server Certificate: `re-issue-server-certificate.sh`
 
 ```angular2html
 cd certs
@@ -56,7 +56,7 @@ sudo chown 999:999 server.key server.crt   # or via your container-based fix fro
 cd ..
 ```
 
-##### generate-client-certificate.sh
+##### Generate Client Certificate: `generate-client-certificate.sh`
 
 ```angular2html
 mkdir -p ./certs/client
@@ -75,7 +75,7 @@ rm client.csr
 cd ../..
 ```
 
-##### pg_hba.conf
+##### PG HBA: `pg_hba.conf`
 
 ```angular2html
 # TYPE    DATABASE  USER  ADDRESS       METHOD    OPTIONS
@@ -84,38 +84,9 @@ hostssl   all       all   0.0.0.0/0     cert      clientcert=verify-full
 host      all       all   0.0.0.0/0     reject
 ```
 
-##### docker-compose.yml
+##### Docker Compose File:  `docker/docker-compose-postgres.yml`
 
-```angular2html
-services:
-postgres:
-image: postgres:16
-container_name: postgres_tls
-restart: unless-stopped
-environment:
-POSTGRES_USER: myuser
-POSTGRES_PASSWORD: mypassword
-POSTGRES_DB: mydb
-ports:
-- "5437:5432"
-volumes:
-- pgdata:/var/lib/postgresql/data
-- ./certs/server.crt:/var/lib/postgresql/server.crt:ro
-- ./certs/server.key:/var/lib/postgresql/server.key:ro
-- ./certs/ca/ca.crt:/var/lib/postgresql/ca.crt:ro
-- ./pg_hba.conf:/var/lib/postgresql/pg_hba.conf:ro
-command: >
--c ssl=on
--c ssl_cert_file=/var/lib/postgresql/server.crt
--c ssl_key_file=/var/lib/postgresql/server.key
--c ssl_ca_file=/var/lib/postgresql/ca.crt
--c hba_file=/var/lib/postgresql/pg_hba.conf
-
-volumes:
-pgdata:
-```
-
-##### convert-client-key.sh
+##### Convert Client Key: `convert-client-key.sh`
 
 ```angular2html
 openssl pkcs8 -topk8 -inform PEM -in certs/client/client.key \

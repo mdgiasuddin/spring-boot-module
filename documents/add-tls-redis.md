@@ -1,6 +1,6 @@
 ### TLS Configuration
 
-##### generate-ca.sh
+##### Generate CA: `generate-ca.sh`
 
 ```angular2html
 mkdir -p certs && cd certs
@@ -11,7 +11,7 @@ openssl req -x509 -new -nodes -sha256 -days 3650 \
 -subj "/CN=redis-ca"
 ```
 
-##### generate-server-cert.sh
+##### Generate Server Cert: `generate-server-cert.sh`
 
 ```angular2html
 cd certs
@@ -27,7 +27,7 @@ openssl x509 -req -sha256 -days 365 \
 -extfile <(printf "subjectAltName=DNS:redis,DNS:localhost,IP:127.0.0.1")
 ```
 
-##### generate-client-crt.sh
+##### Generate Client Cert: `generate-client-crt.sh`
 
 ```angular2html
 cd certs
@@ -41,25 +41,7 @@ openssl x509 -req -sha256 -days 365 \
 -out client.crt
 ```
 
-##### docker-compose.yml
-
-```angular2html
-services:
-redis:
-image: redis/redis-stack-server:latest
-container_name: redis-stack-tls
-environment:
-- REDIS_ARGS=--tls-port 6379 --port 0 --tls-cert-file /tls/redis.crt --tls-key-file /tls/redis.key --tls-ca-cert-file /tls/ca.crt --tls-auth-clients yes
-volumes:
-- ./certs:/tls:ro
-- redis-data:/data
-ports:
-- "6383:6379"
-restart: unless-stopped
-
-volumes:
-redis-data:
-```
+##### Docker Compose File: `docker/docker-compose-redis.yml`
 
 ### Steps
 
@@ -68,28 +50,24 @@ redis-data:
 * Run `sudo docker compose up -d`.
 * Copy `client.crt`, `client_pkcs8.key`, `ca.crt` inside `redis-certs` directory.
 * Update permissions of `client_pkcs8.key` to `600`. Command: `chmod 600 ~/redis-cert/client_pkcs8.key`
-* Update `application.yml`
+* Update `application.properties`
 
 ```angular2html
-spring:
-ssl:
-bundle:
-pem:
-redis-mtls:
-keystore:
-certificate: file:${REDIS_TLS_CLIENT_CERT:/home/giash.inument_bKash.com/redis-cert/client.crt}
-private-key: file:${REDIS_TLS_CLIENT_KEY:/home/giash.inument_bKash.com/redis-cert/client_pkcs8.key}
-truststore:
-certificate: file:${REDIS_TLS_CA_CERT:/home/giash.inument_bKash.com/redis-cert/ca.crt}
+server.port=8080
 
-data:
-redis:
-host: ${REDIS_HOST:localhost}
-port: ${REDIS_PORT:6383}
-ssl:
-enabled: true
-bundle: redis-mtls
-timeout: 5s
+spring.application.name=redis-mtls-demo
+
+# --- SSL Bundle: reads the PEM cert/key files directly, no keystore conversion needed ---
+spring.ssl.bundle.pem.redis-mtls.keystore.certificate=file:${REDIS_TLS_CLIENT_CERT:certs/client.crt}
+spring.ssl.bundle.pem.redis-mtls.keystore.private-key=file:${REDIS_TLS_CLIENT_KEY:certs/client_pkcs8.key}
+spring.ssl.bundle.pem.redis-mtls.truststore.certificate=file:${REDIS_TLS_CA_CERT:certs/ca.crt}
+
+# --- Redis connection: auto-configured by Spring Boot, using the bundle above for mTLS ---
+spring.data.redis.host=${REDIS_HOST:localhost}
+spring.data.redis.port=${REDIS_PORT:6383}
+spring.data.redis.ssl.enabled=true
+spring.data.redis.ssl.bundle=redis-mtls
+spring.data.redis.timeout=5s
 ```
 
 * Run the application.
