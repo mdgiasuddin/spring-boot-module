@@ -23,11 +23,11 @@ public class PaymentScheduler {
 
     private static final int WORKERS = 4;
     private static final int BATCH_SIZE = 500;
-    private static final int MAX_PER_WORKER = 1000;
+    private static final int MAX_PER_WORKER = 15000;
 
     private final SubscriptionService subscriptionService;
 
-    @Scheduled(cron = "0 35 14 * * *", zone = "Asia/Dhaka")
+    @Scheduled(cron = "0 56 13 * * *", zone = "Asia/Dhaka")
     @SchedulerLock(
             name = "process-daily-payments-task",
             lockAtLeastFor = "PT10M",
