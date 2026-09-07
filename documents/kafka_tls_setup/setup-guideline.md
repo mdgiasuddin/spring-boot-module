@@ -58,7 +58,7 @@ cd ..
 echo "Certs generated in ./certs"
 ```
 
-##### Docker Compose File => `docker/docker-compose-kafka.yml`
+##### Docker Compose File => `docker-compose.yml`
 
 ##### Steps to Follow
 
