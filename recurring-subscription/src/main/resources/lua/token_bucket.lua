@@ -1,20 +1,21 @@
--- Token bucket rate limiter
+-- Token bucket rate limiter (parameterized window with precise fractional tracking)
 -- KEYS[1] = bucket key
--- ARGV[1] = maxTokens (bucket capacity)
--- ARGV[2] = refillRate (tokens per second)
---
--- Returns:
---   tokens remaining (>= 0)  if the request is allowed
---   -waitTime (< 0)          if the request is rejected, where waitTime
---                            is the ms until the next token is available
+-- ARGV[1] = maxTokens      (bucket capacity)
+-- ARGV[2] = refillTokens   (tokens added per window)
+-- ARGV[3] = windowSeconds  (length of the refill window, in seconds)
 
 local key = KEYS[1]
 local maxTokens = tonumber(ARGV[1])
-local refillRate = tonumber(ARGV[2])
+local refillTokens = tonumber(ARGV[2])
+local windowSeconds = tonumber(ARGV[3])
 
-if not maxTokens or not refillRate or maxTokens <= 0 or refillRate <= 0 then
-    return redis.error_reply('maxTokens and refillRate must be positive numbers')
+if not maxTokens or not refillTokens or not windowSeconds
+   or maxTokens <= 0 or refillTokens <= 0 or windowSeconds <= 0 then
+    return redis.error_reply('maxTokens, refillTokens and windowSeconds must be positive numbers')
 end
+
+local refillRate = refillTokens / windowSeconds   -- tokens per second
+local msPerToken = 1000 / refillRate
 
 -- Get Redis server time (seconds, microseconds)
 local redisTime = redis.call('TIME')
@@ -24,27 +25,16 @@ local vals = redis.call('HMGET', key, 'tokens', 'lastRefill')
 local tokens = tonumber(vals[1])
 local lastRefill = tonumber(vals[2])
 
-local msPerToken = 1000 / refillRate
-
 if tokens == nil then
     tokens = maxTokens
     lastRefill = currentTime
 else
     local elapsed = currentTime - lastRefill
     if elapsed > 0 then
-        local refill = math.floor(elapsed * refillRate / 1000)
+        local refill = (elapsed * refillRate) / 1000
         if refill > 0 then
-            local oldTokens = tokens
             tokens = math.min(maxTokens, tokens + refill)
-            local tokensAdded = tokens - oldTokens
-
-            -- Advance lastRefill only by the exact time consumed by the tokens added,
-            -- preserving the fractional remainder for the next check.
-            if tokens == maxTokens then
-                lastRefill = currentTime
-            else
-                lastRefill = lastRefill + math.floor(tokensAdded * 1000 / refillRate)
-            end
+            lastRefill = currentTime
         end
     end
 end
@@ -57,16 +47,16 @@ end
 
 redis.call('HSET', key, 'tokens', tokens, 'lastRefill', lastRefill)
 
-local msToFull = (maxTokens - tokens) / (refillRate / 1000)
+local msToFull = (maxTokens - tokens) * msPerToken
 local ttl = math.ceil(msToFull / 1000) + 60
 redis.call('EXPIRE', key, ttl)
 
 if allowed == 1 then
     return tokens
 else
-    -- Time remaining until the next token becomes available, accounting
-    -- for however much of the current refill cycle has already elapsed.
-    local elapsedSinceRefill = currentTime - lastRefill
-    local waitTime = math.ceil(msPerToken - (elapsedSinceRefill % msPerToken))
+    -- Wait time derived directly from the precise fractional token count,
+    -- not from a time-delta modulo (which loses phase info once lastRefill
+    -- is snapped to currentTime on every refill).
+    local waitTime = math.ceil((1 - tokens) * msPerToken)
     return -waitTime
 end

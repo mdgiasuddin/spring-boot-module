@@ -8,12 +8,14 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.security.SecureRandom;
 import java.util.HashSet;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
@@ -31,6 +33,15 @@ public class AppAuthenticationFilter extends OncePerRequestFilter {
             @NonNull HttpServletResponse response,
             @NonNull FilterChain filterChain
     ) throws ServletException, IOException {
+
+        boolean isOk = new SecureRandom().nextBoolean();
+        if (!isOk) {
+            log.error("Authentication failed");
+            response.setStatus(HttpStatus.TOO_MANY_REQUESTS.value());
+            response.setContentType("application/json");
+            response.getWriter().write("{\"error\": \"Too Many Requests\"}");
+            return;
+        }
 
         final String authHeader = request.getHeader(AUTHORIZATION);
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {

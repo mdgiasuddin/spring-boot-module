@@ -14,6 +14,7 @@ public class RedisRateLimiter {
     private static final String KEY = "bank_rate_limiter";
     private static final long MAX_TOKENS = 50;
     private static final long REFILL_RATE = 50;
+    private static final long REFILL_WINDOW = 1;
 
     private final StringRedisTemplate redisTemplate;
     private final RedisScript<Long> script;
@@ -23,7 +24,8 @@ public class RedisRateLimiter {
                 script,
                 Collections.singletonList(KEY),
                 String.valueOf(MAX_TOKENS),
-                String.valueOf(REFILL_RATE));
+                String.valueOf(REFILL_RATE),
+                String.valueOf(REFILL_WINDOW));
     }
 
 }
