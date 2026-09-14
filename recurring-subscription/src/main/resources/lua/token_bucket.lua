@@ -1,17 +1,33 @@
 -- Token bucket rate limiter (parameterized window with precise fractional tracking)
+-- Configurable initial burst: pass ARGV[4]=0 for strict steady-rate pacing
+-- (e.g. calling an external API that must never see a burst), or a small
+-- positive value (e.g. 1-2) for tolerant rate-limiting (e.g. protecting your
+-- own service, where a brand-new client's first request shouldn't be
+-- rejected outright).
+--
 -- KEYS[1] = bucket key
--- ARGV[1] = maxTokens      (bucket capacity)
--- ARGV[2] = refillTokens   (tokens added per window)
--- ARGV[3] = windowSeconds  (length of the refill window, in seconds)
+-- ARGV[1] = maxTokens         (bucket capacity)
+-- ARGV[2] = refillTokens      (tokens added per window)
+-- ARGV[3] = windowSeconds     (length of the refill window, in seconds)
+-- ARGV[4] = initialTokens     (optional, default 0. Tokens granted when a
+--                               key is first created. Use 0 for strict
+--                               external-API pacing; use a small value like
+--                               1-2 for internal rate limiting.)
 
 local key = KEYS[1]
 local maxTokens = tonumber(ARGV[1])
 local refillTokens = tonumber(ARGV[2])
 local windowSeconds = tonumber(ARGV[3])
+local initialTokens = tonumber(ARGV[4])
 
-if not maxTokens or not refillTokens or not windowSeconds
-   or maxTokens <= 0 or refillTokens <= 0 or windowSeconds <= 0 then
-    return redis.error_reply('maxTokens, refillTokens and windowSeconds must be positive numbers')
+if refillTokens <= 0 or windowSeconds <= 0 then
+    return redis.error_reply('refillTokens and windowSeconds must be greater than 0')
+end
+
+if initialTokens == nil then
+    initialTokens = 0   -- default: strict, no burst
+elseif initialTokens < 0 or initialTokens > maxTokens then
+    return redis.error_reply('initialTokens must be between 0 and maxTokens')
 end
 
 local refillRate = refillTokens / windowSeconds   -- tokens per second
@@ -26,7 +42,8 @@ local tokens = tonumber(vals[1])
 local lastRefill = tonumber(vals[2])
 
 if tokens == nil then
-    tokens = maxTokens
+    -- Bucket seeded with caller-supplied initialTokens (0 by default).
+    tokens = initialTokens
     lastRefill = currentTime
 else
     local elapsed = currentTime - lastRefill
