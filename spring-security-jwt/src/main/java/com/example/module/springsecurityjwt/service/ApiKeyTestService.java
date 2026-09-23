@@ -19,6 +19,7 @@ public class ApiKeyTestService {
     private final RequestValidator requestValidator;
 
     public ApiResponse test(SecuredRequest request) {
+        log.info("Received request: {}", request);
         long startTime = System.currentTimeMillis();
         boolean validated = requestValidator.validateRequest(request);
         log.info("Time spent: {}", System.currentTimeMillis() - startTime);

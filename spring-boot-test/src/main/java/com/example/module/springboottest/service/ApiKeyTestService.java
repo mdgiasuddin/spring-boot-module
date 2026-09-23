@@ -19,6 +19,7 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class ApiKeyTestService {
+    private final LogTraceService logTraceService;
     private final RestClient restClient;
     private final ObjectMapper objectMapper;
 
@@ -26,6 +27,9 @@ public class ApiKeyTestService {
     private String securityKey;
 
     public ApiResponse test() {
+        log.info("Testing API key authentication");
+        testLog();
+        logTraceService.testLog();
         SampleRequest request = new SampleRequest(101, "Giash Uddin", LocalDate.of(1995, 10, 2));
         String json = objectMapper.writeValueAsString(request);
         String requestId = UUID.randomUUID().toString().replace("-", "");
@@ -33,8 +37,9 @@ public class ApiKeyTestService {
 
         String modifiedPayload = String.format("%s|%d|%s", requestId, epochMilli, json);
         String signature = SignatureUtil.sign(securityKey, modifiedPayload);
+        log.info("Generated signature: {}", signature);
 
-        return restClient.post()
+        ApiResponse response = restClient.post()
                 .uri("/api/test/api-key")
                 .body(new SecuredRequest(requestId, epochMilli, signature, json))
                 .retrieve()
@@ -42,5 +47,12 @@ public class ApiKeyTestService {
                     throw new IllegalArgumentException("Invalid user creation payload provided.");
                 })
                 .body(ApiResponse.class);
+
+        log.info("Received response: {}", response);
+        return response;
+    }
+
+    private void testLog() {
+        log.info("Testing API key authentication trace id...");
     }
 }

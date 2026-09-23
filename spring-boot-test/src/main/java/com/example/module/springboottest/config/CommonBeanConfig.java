@@ -1,5 +1,6 @@
 package com.example.module.springboottest.config;
 
+import com.example.module.springboottest.trace.TraceIdPropagationInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestClient;
@@ -13,6 +14,7 @@ public class CommonBeanConfig {
         return RestClient.builder()
                 .baseUrl("http://localhost:8190")
                 .defaultHeader("Content-Type", "application/json")
+                .requestInterceptor(new TraceIdPropagationInterceptor())
                 .build();
     }
 
