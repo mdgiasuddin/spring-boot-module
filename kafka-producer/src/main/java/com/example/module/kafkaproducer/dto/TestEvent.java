@@ -16,6 +16,7 @@ public record TestEvent(
         return "TestEvent(" +
                 "subject='" + subject + '\'' +
                 ", content='" + content + '\'' +
+                ", amount=" + amount +
                 ')';
     }
 }

@@ -17,6 +17,7 @@ public class KafkaProducer {
     private final KafkaTemplate<String, TestEvent> kafkaTemplate;
 
     public void sendMessage(TestEvent event, String topic) {
+        log.info("Sending message from topic: {} message -> {}", topic, event);
         Message<TestEvent> message = MessageBuilder
                 .withPayload(event)
                 .setHeader(TOPIC, topic)
