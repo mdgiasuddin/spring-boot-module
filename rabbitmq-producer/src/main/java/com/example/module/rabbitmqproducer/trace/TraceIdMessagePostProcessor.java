@@ -5,8 +5,8 @@ import org.slf4j.MDC;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessagePostProcessor;
 
-import static com.example.module.rabbitmqproducer.trace.TraceConstants.TRACE_ID;
-import static com.example.module.rabbitmqproducer.trace.TraceConstants.TRACE_ID_HEADER;
+import static com.example.module.rabbitmqproducer.trace.TraceUtil.TRACE_ID;
+import static com.example.module.rabbitmqproducer.trace.TraceUtil.TRACE_ID_HEADER;
 
 public class TraceIdMessagePostProcessor implements MessagePostProcessor {
 

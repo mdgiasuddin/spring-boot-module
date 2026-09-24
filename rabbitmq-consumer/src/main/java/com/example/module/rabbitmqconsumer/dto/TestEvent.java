@@ -5,6 +5,8 @@ import jakarta.validation.constraints.NotNull;
 
 public record TestEvent(
         @NotBlank
+        String id,
+        @NotBlank
         String subject,
         @NotBlank
         String content,
@@ -14,6 +16,7 @@ public record TestEvent(
     @Override
     public String toString() {
         return "TestEvent(" +
+                "id='" + id + '\'' +
                 "subject='" + subject + '\'' +
                 ", content='" + content + '\'' +
                 ", amount=" + amount +
