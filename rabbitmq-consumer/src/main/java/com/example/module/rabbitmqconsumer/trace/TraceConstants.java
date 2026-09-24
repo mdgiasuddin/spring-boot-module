@@ -1,4 +1,4 @@
-package com.example.module.kafkaproducer.trace;
+package com.example.module.rabbitmqconsumer.trace;
 
 import lombok.NoArgsConstructor;
 

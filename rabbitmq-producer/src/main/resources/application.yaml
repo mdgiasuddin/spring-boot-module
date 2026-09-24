@@ -7,3 +7,8 @@ spring:
     port: 5772
     username: admin
     password: admin123
+
+logging:
+  pattern:
+    console: "%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} [traceId=%X{traceId}, spanId=%X{spanId}] - %msg%n"
+    file: "%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} [traceId=%X{traceId}, spanId=%X{spanId}] - %msg%n"

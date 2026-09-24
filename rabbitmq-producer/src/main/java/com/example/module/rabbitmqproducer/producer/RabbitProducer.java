@@ -16,6 +16,7 @@ public class RabbitProducer {
     private final RabbitTemplate rabbitTemplate;
 
     public void sendDirectMessage(TestEvent event) {
+        log.info("RabbitMQ sending message: {}", event);
         rabbitTemplate.convertAndSend(MAIN_EXCHANGE,
                 MAIN_ROUTING_KEY,
                 event);

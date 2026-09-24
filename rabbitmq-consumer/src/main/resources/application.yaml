@@ -15,3 +15,8 @@ spring:
           enabled: true
           max-retries: 3
           initial-interval: 3000ms
+
+logging:
+  pattern:
+    console: "%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} [traceId=%X{traceId}, spanId=%X{spanId}] - %msg%n"
+    file: "%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} [traceId=%X{traceId}, spanId=%X{spanId}] - %msg%n"

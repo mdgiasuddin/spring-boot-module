@@ -14,10 +14,11 @@ public class RabbitConsumer {
 
     @RabbitListener(queues = MAIN_QUEUE, concurrency = "5")
     public void listen(TestEvent event) {
+        log.info("RabbitMQ received message: {}", event);
         if (event.amount() > 100) {
             throw new RuntimeException("Amount is too high");
         }
-        log.info("Received message from main queue: {}", event);
+        log.info("Processing message from main queue: {}", event);
     }
 
     @RabbitListener(queues = DLQ_QUEUE, concurrency = "5")

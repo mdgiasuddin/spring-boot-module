@@ -1,5 +1,6 @@
 package com.example.module.rabbitmqproducer.config;
 
+import com.example.module.rabbitmqproducer.trace.TraceIdMessagePostProcessor;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.DirectExchange;
@@ -31,6 +32,9 @@ public class RabbitConfig {
     public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory, MessageConverter messageConverter) {
         RabbitTemplate template = new RabbitTemplate(connectionFactory);
         template.setMessageConverter(messageConverter);
+
+        // Propagate trace id in message header
+        template.addBeforePublishPostProcessors(new TraceIdMessagePostProcessor());
 
         return template;
     }

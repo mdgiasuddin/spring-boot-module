@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.UUID;
 
+import static com.example.module.kafkaproducer.trace.TraceConstants.SPAN_ID;
+import static com.example.module.kafkaproducer.trace.TraceConstants.TRACE_ID;
+
 @RestController
 @RequestMapping("/api/kafka")
 @RequiredArgsConstructor
@@ -24,10 +27,14 @@ public class KafkaController {
     public String send(@Valid @RequestBody TestEvent event, @PathVariable String topic) {
         String traceId = UUID.randomUUID().toString().replace("-", "");
         String spanId = UUID.randomUUID().toString().replace("-", "").substring(0, 8);
-        MDC.put("traceId", traceId);
-        MDC.put("spanId", spanId);
+        MDC.put(TRACE_ID, traceId);
+        MDC.put(SPAN_ID, spanId);
 
         kafkaProducer.sendMessage(event, topic);
+
+        MDC.remove(TRACE_ID);
+        MDC.remove(SPAN_ID);
+
         return "Message sent!";
     }
 }
