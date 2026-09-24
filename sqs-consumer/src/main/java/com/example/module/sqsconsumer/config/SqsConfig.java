@@ -1,5 +1,6 @@
 package com.example.module.sqsconsumer.config;
 
+import com.example.module.sqsconsumer.trace.TraceIdConsumerInterceptor;
 import io.awspring.cloud.sqs.config.SqsMessageListenerContainerFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -50,6 +51,7 @@ public class SqsConfig {
                 .builder()
                 .sqsAsyncClient(sqsAsyncClient)
                 .configure(options -> options.acknowledgementMode(MANUAL))
+                .messageInterceptor(new TraceIdConsumerInterceptor()) // Set trace id from header
                 .build();
     }
 }
