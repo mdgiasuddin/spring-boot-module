@@ -6,3 +6,7 @@ spring:
     redis:
       host: localhost
       port: 6379
+      uri: redis://localhost:6379
+      bloom:
+        active-filter-name: bf_failed_wallets
+        temp-filter-name: bf_failed_wallets_temp
