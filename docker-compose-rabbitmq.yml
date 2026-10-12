@@ -1,6 +1,7 @@
+name: spring-boot-module
 services:
   rabbitmq:
-    image: rabbitmq:4.3.0-management
+    image: rabbitmq:4.3.6-management
     container_name: rabbitmq_test
     hostname: rabbitmq
     restart: unless-stopped

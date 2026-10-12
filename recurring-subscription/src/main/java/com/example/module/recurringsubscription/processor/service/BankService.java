@@ -3,6 +3,7 @@ package com.example.module.recurringsubscription.processor.service;
 import com.example.module.recurringsubscription.common.entity.Payment;
 import com.example.module.recurringsubscription.common.enumeration.PaymentStatus;
 import com.example.module.recurringsubscription.common.repository.jpa.PaymentRepository;
+import com.example.module.recurringsubscription.processor.ratelimiter.RateLimitResult;
 import com.example.module.recurringsubscription.processor.ratelimiter.RedisRateLimiter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,8 +24,8 @@ public class BankService {
 
     public void processPayment(Payment payment) {
         while (true) {
-            long result = rateLimiter.acquire();
-            if (result >= 0) {
+            RateLimitResult result = rateLimiter.acquire();
+            if (result.allowed()) {
                 int randNum = random.nextInt(100);
                 PaymentStatus status = randNum < 10 ? FAILED : SUCCESS;
                 payment.setStatus(status);
@@ -33,7 +34,7 @@ public class BankService {
             }
 
             try {
-                Thread.sleep(-result);
+                Thread.sleep(result.waitTimeMs());
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }

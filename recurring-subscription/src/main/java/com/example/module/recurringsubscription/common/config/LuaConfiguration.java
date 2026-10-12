@@ -4,17 +4,19 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.redis.core.script.RedisScript;
-import org.springframework.scripting.support.ResourceScriptSource;
 
-import java.io.IOException;
+import java.util.List;
 
 @Configuration
 public class LuaConfiguration {
 
     @Bean
-    public RedisScript<Long> tokenBucketScript() throws IOException {
-        ResourceScriptSource source = new ResourceScriptSource(new ClassPathResource("lua/token_bucket.lua"));
-        return RedisScript.of(source.getScriptAsString(), Long.class);
+    @SuppressWarnings("unchecked")
+    public RedisScript<List<Long>> tokenBucketScript() {
+        return RedisScript.of(
+                new ClassPathResource("lua/token_bucket.lua"),
+                (Class<List<Long>>) (Class<?>) List.class
+        );
     }
 
 }

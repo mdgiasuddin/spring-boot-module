@@ -6,28 +6,34 @@ import org.springframework.data.redis.core.script.RedisScript;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class RedisRateLimiter {
 
     private static final String KEY = "bank_rate_limiter";
-    private static final long MAX_TOKENS = 200;
-    private static final long REFILL_RATE = 200;
-    private static final long REFILL_WINDOW = 60;
+    private static final long REFILL_RATE = 50;
+    private static final double BURST_SECONDS = 0.15;
+    private static final long REFILL_WINDOW = 1;
     private static final long INITIAL_TOKENS = 0;
 
     private final StringRedisTemplate redisTemplate;
-    private final RedisScript<Long> script;
+    private final RedisScript<List<Long>> script;
 
-    public long acquire() {
-        return redisTemplate.execute(
+    public RateLimitResult acquire() {
+        List<Long> result = redisTemplate.execute(
                 script,
                 Collections.singletonList(KEY),
-                String.valueOf(MAX_TOKENS),
+                String.valueOf((long) (REFILL_RATE * BURST_SECONDS)),
                 String.valueOf(REFILL_RATE),
                 String.valueOf(REFILL_WINDOW),
                 String.valueOf(INITIAL_TOKENS)
+        );
+
+        return new RateLimitResult(
+                result.getFirst() == 1L,
+                result.get(1)
         );
     }
 

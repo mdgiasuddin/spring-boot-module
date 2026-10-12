@@ -69,11 +69,11 @@ local ttl = math.ceil(msToFull / 1000) + 60
 redis.call('EXPIRE', key, ttl)
 
 if allowed == 1 then
-    return tokens
+    return {1, 0}
 else
     -- Wait time derived directly from the precise fractional token count,
     -- not from a time-delta modulo (which loses phase info once lastRefill
     -- is snapped to currentTime on every refill).
     local waitTime = math.ceil((1 - tokens) * msPerToken)
-    return -waitTime
+    return {0, waitTime}
 end
