@@ -21,6 +21,7 @@ public class BankService {
     private final PaymentRepository paymentRepository;
     private final RedisRateLimiter rateLimiter;
     private final Random random = new SecureRandom();
+    private static final int JITTER_MS = 5;
 
     public void processPayment(Payment payment) {
         while (true) {
@@ -34,7 +35,7 @@ public class BankService {
             }
 
             try {
-                Thread.sleep(result.waitTimeMs());
+                Thread.sleep(result.waitTimeMs() + random.nextInt(JITTER_MS));
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }

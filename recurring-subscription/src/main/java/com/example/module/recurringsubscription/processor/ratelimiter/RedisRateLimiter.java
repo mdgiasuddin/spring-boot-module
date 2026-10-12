@@ -25,7 +25,7 @@ public class RedisRateLimiter {
         List<Long> result = redisTemplate.execute(
                 script,
                 Collections.singletonList(KEY),
-                String.valueOf((long) (REFILL_RATE * BURST_SECONDS)),
+                String.valueOf((long) Math.ceil(BURST_SECONDS * REFILL_RATE)),
                 String.valueOf(REFILL_RATE),
                 String.valueOf(REFILL_WINDOW),
                 String.valueOf(INITIAL_TOKENS)

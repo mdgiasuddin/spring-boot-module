@@ -27,10 +27,10 @@ public class PaymentScheduler {
 
     private final SubscriptionService subscriptionService;
 
-    @Scheduled(cron = "0 28 15 * * *", zone = "Asia/Dhaka")
+    @Scheduled(cron = "0 23 22 * * *", zone = "Asia/Dhaka")
     @SchedulerLock(
             name = "process-daily-payments-task",
-            lockAtLeastFor = "PT10M",
+            lockAtLeastFor = "PT5M",
             lockAtMostFor = "PT20M"
     )
     public void pay() {
