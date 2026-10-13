@@ -1,5 +1,6 @@
 package com.example.module.recurringsubscription.processor.service;
 
+import com.example.module.recurringsubscription.common.dto.event.PaymentEvent;
 import com.example.module.recurringsubscription.common.entity.Payment;
 import com.example.module.recurringsubscription.common.repository.jpa.PaymentRepository;
 import lombok.RequiredArgsConstructor;
@@ -13,18 +14,18 @@ import static com.example.module.recurringsubscription.common.enumeration.Paymen
 @Service
 @RequiredArgsConstructor
 public class PaymentHandler {
-    private final BankService bankService;
+    private final RateLimitedPaymentService paymentService;
     private final PaymentRepository paymentRepository;
 
-    public void handlePayment(Long paymentId) {
-        int claimed = paymentRepository.claim(paymentId, QUEUED, PROCESSING);
+    public void handlePayment(PaymentEvent event) {
+        int claimed = paymentRepository.claim(event.paymentId(), QUEUED, PROCESSING);
 
         if (claimed == 0) {
-            log.warn("Payment with id: {} not found or already claimed", paymentId);
+            log.warn("Payment with id: {} not found or already claimed", event.paymentId());
             return;
         }
 
-        Payment payment = paymentRepository.findById(paymentId).orElseThrow();
-        bankService.processPayment(payment);
+        Payment payment = paymentRepository.findById(event.paymentId()).orElseThrow();
+        paymentService.processPayment(payment, event.merchantId());
     }
 }

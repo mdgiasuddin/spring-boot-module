@@ -24,7 +24,7 @@ public class Subscription {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    private String merchantName;
+    private String merchantId;
     private String payerWallet;
     private BigDecimal amount;
     @Enumerated(STRING)

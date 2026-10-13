@@ -16,7 +16,7 @@ public class SubscriptionRowMapper implements RowMapper<Subscription> {
         Subscription subscription = new Subscription();
 
         subscription.setId(rs.getLong("id"));
-        subscription.setMerchantName(rs.getString("merchant_name"));
+        subscription.setMerchantId(rs.getString("merchant_id"));
         subscription.setPayerWallet(rs.getString("payer_wallet"));
         subscription.setAmount(rs.getBigDecimal("amount"));
         subscription.setFrequency(Frequency.valueOf(rs.getString("frequency")));

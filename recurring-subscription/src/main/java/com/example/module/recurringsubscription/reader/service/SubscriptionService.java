@@ -1,5 +1,6 @@
 package com.example.module.recurringsubscription.reader.service;
 
+import com.example.module.recurringsubscription.common.dto.event.PaymentEvent;
 import com.example.module.recurringsubscription.common.entity.Payment;
 import com.example.module.recurringsubscription.common.entity.Subscription;
 import com.example.module.recurringsubscription.common.repository.jdbc.PaymentBatchRepository;
@@ -47,7 +48,17 @@ public class SubscriptionService {
         subscriptionBatchRepository.batchUpdate(subscriptions);
         paymentBatchRepository.batchInsert(payments);
 
-        kafkaProducer.sendPaymentEvent(payments);
+        List<PaymentEvent> paymentEvents = new ArrayList<>(subscriptions.size());
+        for (int i = 0; i < subscriptions.size(); i++) {
+            paymentEvents.add(
+                    new PaymentEvent(
+                            payments.get(i).getId(),
+                            subscriptions.get(i).getMerchantId()
+                    )
+            );
+        }
+
+        kafkaProducer.sendPaymentEvent(paymentEvents);
 
         return subscriptions.size();
     }

@@ -21,7 +21,7 @@ public class SubscriptionBatchRepository {
         String sql = """
                 select
                     id,
-                    merchant_name,
+                    merchant_id,
                     payer_wallet,
                     amount,
                     frequency,

@@ -4,7 +4,8 @@ package com.example.module.recurringsubscription.common.dto.event;
 import jakarta.annotation.Nonnull;
 
 public record PaymentEvent(
-        Long paymentId
+        Long paymentId,
+        String merchantId
 ) {
 
     @Override
@@ -12,6 +13,7 @@ public record PaymentEvent(
     public String toString() {
         return "PaymentEvent(" +
                 "paymentId=" + paymentId +
+                "merchantId=" + merchantId +
                 ')';
     }
 }

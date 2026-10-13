@@ -23,6 +23,6 @@ public class PaymentEventListener {
     public void listen(ConsumerRecord<String, byte[]> messageBytes) {
         PaymentEvent event = objectMapper.readValue(messageBytes.value(), PaymentEvent.class);
         log.info("Received message from topic: {}", event);
-        paymentHandler.handlePayment(event.paymentId());
+        paymentHandler.handlePayment(event);
     }
 }
