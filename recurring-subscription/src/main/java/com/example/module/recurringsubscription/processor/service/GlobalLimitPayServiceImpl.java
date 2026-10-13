@@ -11,7 +11,7 @@ import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
-public class PaymentServiceImpl implements RateLimitedPaymentService {
+public class GlobalLimitPayServiceImpl implements RateLimitPayService {
 
     private final BankService bankService;
     private final RedisRateLimiter rateLimiter;
@@ -19,7 +19,7 @@ public class PaymentServiceImpl implements RateLimitedPaymentService {
     private static final int JITTER_MS = 5;
 
     @Override
-    public void processPayment(Payment payment, String merchantName) {
+    public void processPayment(Payment payment, String merchantId) {
         while (true) {
             RateLimitResult result = rateLimiter.acquire();
             if (result.allowed()) {

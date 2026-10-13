@@ -22,12 +22,12 @@ import java.util.concurrent.Future;
 public class PaymentScheduler {
 
     private static final int WORKERS = 4;
-    private static final int BATCH_SIZE = 100;
-    private static final int MAX_PER_WORKER = 2000;
+    private static final int BATCH_SIZE = 500;
+    private static final int MAX_PER_WORKER = 5000;
 
     private final SubscriptionService subscriptionService;
 
-    @Scheduled(cron = "0 12 10 * * *", zone = "Asia/Dhaka")
+    @Scheduled(cron = "0 11 11 * * *", zone = "Asia/Dhaka")
     @SchedulerLock(
             name = "process-daily-payments-task",
             lockAtLeastFor = "PT5M",

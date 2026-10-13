@@ -3,8 +3,8 @@ package com.example.module.recurringsubscription.processor.service;
 import com.example.module.recurringsubscription.common.dto.event.PaymentEvent;
 import com.example.module.recurringsubscription.common.entity.Payment;
 import com.example.module.recurringsubscription.common.repository.jpa.PaymentRepository;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import static com.example.module.recurringsubscription.common.enumeration.PaymentStatus.PROCESSING;
@@ -12,10 +12,18 @@ import static com.example.module.recurringsubscription.common.enumeration.Paymen
 
 @Slf4j
 @Service
-@RequiredArgsConstructor
 public class PaymentHandler {
-    private final RateLimitedPaymentService paymentService;
+    private final RateLimitPayService paymentService;
     private final PaymentRepository paymentRepository;
+
+    public PaymentHandler(
+            @Qualifier("merchantLimitPayServiceImpl")
+            RateLimitPayService paymentService,
+            PaymentRepository paymentRepository
+    ) {
+        this.paymentService = paymentService;
+        this.paymentRepository = paymentRepository;
+    }
 
     public void handlePayment(PaymentEvent event) {
         int claimed = paymentRepository.claim(event.paymentId(), QUEUED, PROCESSING);

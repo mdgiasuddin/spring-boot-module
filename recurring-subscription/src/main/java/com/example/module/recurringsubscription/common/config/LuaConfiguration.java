@@ -10,11 +10,20 @@ import java.util.List;
 @Configuration
 public class LuaConfiguration {
 
-    @Bean
     @SuppressWarnings("unchecked")
-    public RedisScript<List<Long>> tokenBucketScript() {
+    @Bean(name = "globalRateLimitScript")
+    public RedisScript<List<Long>> globalRateLimitScript() {
         return RedisScript.of(
-                new ClassPathResource("lua/token_bucket.lua"),
+                new ClassPathResource("lua/global_rate_limit_script.lua"),
+                (Class<List<Long>>) (Class<?>) List.class
+        );
+    }
+
+    @SuppressWarnings("unchecked")
+    @Bean(name = "merchantRateLimitScript")
+    public RedisScript<List<Long>> merchantRateLimitScript() {
+        return RedisScript.of(
+                new ClassPathResource("lua/merchant_rate_limit_script.lua"),
                 (Class<List<Long>>) (Class<?>) List.class
         );
     }
