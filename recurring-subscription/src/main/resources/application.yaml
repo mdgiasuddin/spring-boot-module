@@ -37,3 +37,8 @@ spring:
     redis:
       host: localhost
       port: 6379
+
+payment:
+  merchant:
+    rate-limit:
+      enabled: false
