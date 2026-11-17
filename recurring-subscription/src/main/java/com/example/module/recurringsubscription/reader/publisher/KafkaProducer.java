@@ -28,7 +28,7 @@ public class KafkaProducer {
                     .build();
 
             kafkaTemplate.send(message);
-            log.info("Message sent -> {}", event.paymentId());
+//            log.info("Message sent -> {}", event.paymentId());
         });
 
     }

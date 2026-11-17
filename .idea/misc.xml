@@ -20,6 +20,7 @@
         <option value="$PROJECT_DIR$/spring-batch/pom.xml" />
         <option value="$PROJECT_DIR$/recurring-subscription/pom.xml" />
         <option value="$PROJECT_DIR$/spring-neo4j/pom.xml" />
+        <option value="$PROJECT_DIR$/db-partition/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">
