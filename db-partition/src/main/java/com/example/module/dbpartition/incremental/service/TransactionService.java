@@ -1,7 +1,7 @@
 package com.example.module.dbpartition.incremental.service;
 
 import com.example.module.dbpartition.incremental.model.dto.request.TransactionCreateRequest;
-import com.example.module.dbpartition.incremental.model.dto.request.TransactionResponse;
+import com.example.module.dbpartition.incremental.model.dto.response.TransactionResponse;
 import com.example.module.dbpartition.incremental.model.entity.Transaction;
 import com.example.module.dbpartition.incremental.model.id.TransactionId;
 import com.example.module.dbpartition.incremental.model.idgenerator.TransactionIdGenerator;

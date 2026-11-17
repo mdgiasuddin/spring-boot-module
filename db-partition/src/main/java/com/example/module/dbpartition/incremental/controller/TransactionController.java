@@ -1,7 +1,7 @@
 package com.example.module.dbpartition.incremental.controller;
 
 import com.example.module.dbpartition.incremental.model.dto.request.TransactionCreateRequest;
-import com.example.module.dbpartition.incremental.model.dto.request.TransactionResponse;
+import com.example.module.dbpartition.incremental.model.dto.response.TransactionResponse;
 import com.example.module.dbpartition.incremental.service.TransactionService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

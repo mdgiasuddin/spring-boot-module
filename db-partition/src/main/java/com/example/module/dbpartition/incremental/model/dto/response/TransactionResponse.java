@@ -1,4 +1,4 @@
-package com.example.module.dbpartition.incremental.model.dto.request;
+package com.example.module.dbpartition.incremental.model.dto.response;
 
 import com.example.module.dbpartition.common.enumeration.TransactionStatus;
 import com.example.module.dbpartition.incremental.model.entity.Transaction;
