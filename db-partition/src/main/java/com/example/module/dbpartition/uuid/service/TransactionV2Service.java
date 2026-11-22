@@ -1,6 +1,7 @@
 package com.example.module.dbpartition.uuid.service;
 
 import com.example.module.dbpartition.uuid.model.dto.request.TransactionV2CreateRequest;
+import com.example.module.dbpartition.uuid.model.dto.request.TransactionV2UpdateRequest;
 import com.example.module.dbpartition.uuid.model.dto.response.TransactionV2Response;
 import com.example.module.dbpartition.uuid.model.entity.TransactionV2;
 import com.example.module.dbpartition.uuid.model.id.TransactionIdV2;
@@ -9,11 +10,9 @@ import com.example.module.dbpartition.uuid.repository.TransactionV2Repository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
 import java.util.UUID;
 
 import static com.example.module.dbpartition.common.enumeration.TransactionStatus.PENDING;
-import static java.time.temporal.ChronoUnit.DAYS;
 
 @Service
 @RequiredArgsConstructor
@@ -36,12 +35,16 @@ public class TransactionV2Service {
     }
 
     public TransactionV2Response getTransaction(UUID id) {
-        TransactionIdV2 txnId = new TransactionIdV2(id);
-        Instant createdAtFrom = txnId.getCreatedAt().truncatedTo(DAYS);
-        Instant createdAtTo = createdAtFrom.plus(1, DAYS);
-
-        return transactionV2Repository.getTransactionById(id, createdAtFrom, createdAtTo)
+        return transactionV2Repository.findById(new TransactionIdV2(id))
                 .map(TransactionV2Response::new)
                 .orElse(null);
+    }
+
+    public TransactionV2Response updateTransaction(TransactionV2UpdateRequest request) {
+        TransactionV2 transaction = transactionV2Repository.findById(new TransactionIdV2(request.id()))
+                .orElseThrow();
+
+        transaction.setAmount(request.amount());
+        return new TransactionV2Response(transactionV2Repository.save(transaction));
     }
 }
