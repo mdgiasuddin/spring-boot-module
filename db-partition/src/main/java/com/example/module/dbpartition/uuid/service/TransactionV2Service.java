@@ -9,6 +9,7 @@ import com.example.module.dbpartition.uuid.model.idgenerator.UuidV7Generator;
 import com.example.module.dbpartition.uuid.repository.TransactionV2Repository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
@@ -40,11 +41,12 @@ public class TransactionV2Service {
                 .orElse(null);
     }
 
+    @Transactional
     public TransactionV2Response updateTransaction(TransactionV2UpdateRequest request) {
         TransactionV2 transaction = transactionV2Repository.findById(new TransactionIdV2(request.id()))
                 .orElseThrow();
 
         transaction.setAmount(request.amount());
-        return new TransactionV2Response(transactionV2Repository.save(transaction));
+        return new TransactionV2Response(transaction); // save is unnecessary due to transaction dirty-checking
     }
 }
