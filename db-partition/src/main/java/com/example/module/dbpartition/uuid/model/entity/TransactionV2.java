@@ -11,6 +11,7 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.springframework.data.domain.Persistable;
 
@@ -21,6 +22,7 @@ import static org.hibernate.type.SqlTypes.NAMED_ENUM;
 
 @Entity
 @Table(name = "transactions_uuid")
+@DynamicUpdate
 @Getter
 @Setter
 public class TransactionV2 implements Persistable<TransactionIdV2> {
